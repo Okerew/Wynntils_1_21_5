@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.services.itemrecord.type;
@@ -24,8 +24,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.Unbreakable;
+import net.minecraft.world.item.component.TooltipDisplay;
 
 public record SavedItem(String base64, Set<String> categories, ItemStack itemStack) implements Comparable<SavedItem> {
     // This is the encoding settings used to encode the item when it was saved
@@ -85,21 +84,14 @@ public record SavedItem(String base64, Set<String> categories, ItemStack itemSta
             ItemStack itemStack = new ItemStack(Item.byId(itemStackInfo.itemId), 1);
             DataComponentMap.Builder componentsBuilder = DataComponentMap.builder()
                     .set(DataComponents.DAMAGE, itemStackInfo.damage)
-                    .set(DataComponents.UNBREAKABLE, new Unbreakable(false))
-                    .set(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE);
+                    .set(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+                    .set(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT);
 
             if (itemStackInfo.color != -1) {
-                componentsBuilder.set(DataComponents.DYED_COLOR, new DyedItemColor(itemStackInfo.color, false));
+                componentsBuilder.set(DataComponents.DYED_COLOR, new DyedItemColor(itemStackInfo.color));
             }
 
             itemStack.applyComponents(componentsBuilder.build());
-
-            // Also hide the attribute modifiers tooltip
-            itemStack.set(
-                    DataComponents.ATTRIBUTE_MODIFIERS,
-                    itemStack
-                            .getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
-                            .withTooltip(false));
 
             return new SavedItem(base64, categories, itemStack);
         }
@@ -120,7 +112,7 @@ public record SavedItem(String base64, Set<String> categories, ItemStack itemSta
 
             // Leather armor can be dyed, we need to store the color
             int color = components
-                    .getOrDefault(DataComponents.DYED_COLOR, new DyedItemColor(-1, false))
+                    .getOrDefault(DataComponents.DYED_COLOR, new DyedItemColor(-1))
                     .rgb();
 
             int damage = components.getOrDefault(DataComponents.DAMAGE, 0);
