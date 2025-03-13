@@ -41,7 +41,7 @@
     "MouseHandlerMixin",
     "MultiPlayerGameModeMixin",
     "PackRepositoryMixin",
-    "PlayerMixin",
+    "LivingEntityMixin",
     "PlayerRendererMixin",
     "PlayerTabOverlayMixin",
     "ProgressScreenMixin",
