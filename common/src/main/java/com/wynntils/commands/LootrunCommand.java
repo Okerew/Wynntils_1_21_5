@@ -181,7 +181,7 @@ public class LootrunCommand extends Command {
     }
 
     private int addJsonLootrunNote(CommandContext<CommandSourceStack> context) {
-        Component text = ComponentArgument.getComponent(context, "text");
+        Component text = ComponentArgument.getRawComponent(context, "text");
         Entity root = McUtils.player().getRootVehicle();
         BlockPos pos = root.blockPosition();
         context.getSource()
