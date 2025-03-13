@@ -5,23 +5,30 @@
 package com.wynntils.models.inventory.type;
 
 import java.util.Locale;
+import net.minecraft.world.entity.EquipmentSlot;
 
 public enum InventoryArmor {
-    HELMET("Helmet", 3),
-    CHESTPLATE("Chestplate", 2),
-    LEGGINGS("Leggings", 1),
-    BOOTS("Boots", 0);
+    HELMET("Helmet", 3, EquipmentSlot.HEAD),
+    CHESTPLATE("Chestplate", 2, EquipmentSlot.BODY),
+    LEGGINGS("Leggings", 1, EquipmentSlot.LEGS),
+    BOOTS("Boots", 0, EquipmentSlot.BODY);
 
     private final String armorName;
     private final int armorSlot;
+    private final EquipmentSlot equipmentSlot;
 
-    InventoryArmor(String armorName, int armorSlot) {
+    InventoryArmor(String armorName, int armorSlot, EquipmentSlot equipmentSlot) {
         this.armorName = armorName;
         this.armorSlot = armorSlot;
+        this.equipmentSlot = equipmentSlot;
     }
 
     public int getSlot() {
         return armorSlot;
+    }
+
+    public EquipmentSlot getEquipmentSlot() {
+        return equipmentSlot;
     }
 
     public static InventoryArmor fromString(String type) {

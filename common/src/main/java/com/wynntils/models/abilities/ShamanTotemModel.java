@@ -89,8 +89,7 @@ public final class ShamanTotemModel extends Model {
                     // Checks to verify this is a totem
                     // These must be ran with a delay,
                     // inventory contents are set a couple ticks after the totem actually spawns
-                    List<ItemStack> inv = new ArrayList<>();
-                    totemAS.getArmorSlots().forEach(inv::add);
+                    List<ItemStack> inv = new ArrayList<>(totemAS.equipment.items.values());
 
                     if (inv.size() < 4) return;
 

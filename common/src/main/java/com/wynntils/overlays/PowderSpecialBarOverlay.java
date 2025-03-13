@@ -62,7 +62,7 @@ public class PowderSpecialBarOverlay extends Overlay {
             GuiGraphics guiGraphics, MultiBufferSource bufferSource, DeltaTracker deltaTracker, Window window) {
         PowderSpecialInfo powderSpecialInfo = Models.CharacterStats.getPowderSpecialInfo();
         if (this.onlyIfWeaponHeld.get()
-                && !ItemUtils.isWeapon(McUtils.inventory().getSelected())) return;
+                && !ItemUtils.isWeapon(McUtils.inventory().getSelectedItem())) return;
         if (this.hideIfNoCharge.get()
                 && (powderSpecialInfo == PowderSpecialInfo.EMPTY || powderSpecialInfo.charge() == 0f)) return;
 
