@@ -108,7 +108,7 @@ public class PersonalStorageUtilitiesWidget extends AbstractWidget {
         return false;
     }
 
-    public void jumpToPage(int destination) {
+    public void jumpToPage(short destination) {
         toggleEditInput(false);
         feature.jumpToDestination(destination);
     }
@@ -133,7 +133,7 @@ public class PersonalStorageUtilitiesWidget extends AbstractWidget {
         int renderY = getY() + 23;
 
         for (int i = 0; i < container.getFinalPage(); i++) {
-            quickJumpButtons.add(new QuickJumpButton(renderX, renderY, i + 1, this));
+            quickJumpButtons.add(new QuickJumpButton(renderX, renderY, (short) (i + 1), this));
 
             renderX += BUTTON_SPACING;
 

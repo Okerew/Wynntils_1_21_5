@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2022-2023.
+ * Copyright © Wynntils 2022-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.features.inventory;
@@ -36,7 +36,7 @@ public class EmeraldPouchHotkeyFeature extends Feature {
     private void onOpenPouchKeyPress() {
         if (!Models.WorldState.onWorld()) return;
 
-        int slotNumber = getEmeraldPouchSlot();
+        short slotNumber = getEmeraldPouchSlot();
 
         if (slotNumber == NO_POUCHES) {
             // We found no emerald pouches at all
@@ -63,14 +63,14 @@ public class EmeraldPouchHotkeyFeature extends Feature {
         InventoryUtils.sendInventorySlotMouseClick(slotNumber, InventoryUtils.MouseClickType.RIGHT_CLICK);
     }
 
-    private int getEmeraldPouchSlot() {
+    private short getEmeraldPouchSlot() {
         int bestEmptyTier = -1;
-        int bestEmptySlot = -1;
-        int foundNonEmptySlot = -1;
+        short bestEmptySlot = -1;
+        short foundNonEmptySlot = -1;
 
         // Look through the entire inventory after any pouches
         Container inventory = McUtils.inventory();
-        for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+        for (short slot = 0; slot < inventory.getContainerSize(); slot++) {
             ItemStack itemStack = inventory.getItem(slot);
             Optional<EmeraldPouchItem> optPouchItem = Models.Item.asWynnItem(itemStack, EmeraldPouchItem.class);
             if (optPouchItem.isEmpty()) continue;

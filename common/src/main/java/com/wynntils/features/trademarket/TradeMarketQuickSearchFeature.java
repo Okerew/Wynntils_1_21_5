@@ -77,7 +77,7 @@ public class TradeMarketQuickSearchFeature extends Feature {
     // e.g. "CorruptedÀÀÀGalleon'sÀÀÀGraveyard KeyÀ" -> "CorruptedÀÀÀGalleon'sÀÀÀGraveyard Key"
     private static final Pattern EOL_PATTERN = Pattern.compile("À+$");
 
-    private static final int SEARCH_SLOT = 47;
+    private static final short SEARCH_SLOT = 47;
     private String searchQuery;
     private boolean openChatWhenContainerClosed = false;
     private boolean quickSearching = false;
@@ -144,7 +144,7 @@ public class TradeMarketQuickSearchFeature extends Feature {
         ContainerUtils.clickOnSlot(
                 SEARCH_SLOT,
                 McUtils.containerMenu().containerId,
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 McUtils.containerMenu().getItems());
     }
 

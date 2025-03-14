@@ -275,7 +275,7 @@ public class ContainerSearchFeature extends Feature {
                 ContainerUtils.pressKeyOnSlot(
                         Models.Bank.QUICK_JUMP_SLOT,
                         abstractContainerScreen.getMenu().containerId,
-                        0,
+                        (byte) 0,
                         abstractContainerScreen.getMenu().getItems());
                 return;
             }
@@ -296,7 +296,7 @@ public class ContainerSearchFeature extends Feature {
             guildBankLastSearch = System.currentTimeMillis();
         }
 
-        int slot = direction == 1 ? currentContainer.getNextItemSlot() : currentContainer.getPreviousItemSlot();
+        short slot = direction == 1 ? currentContainer.getNextItemSlot() : currentContainer.getPreviousItemSlot();
 
         StyledText name = StyledText.fromComponent(
                 abstractContainerScreen.getMenu().getItems().get(slot).getHoverName());
@@ -312,7 +312,7 @@ public class ContainerSearchFeature extends Feature {
         ContainerUtils.clickOnSlot(
                 slot,
                 abstractContainerScreen.getMenu().containerId,
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 abstractContainerScreen.getMenu().getItems());
     }
 

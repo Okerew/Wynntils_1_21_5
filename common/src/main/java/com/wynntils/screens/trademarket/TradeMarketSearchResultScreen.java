@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2023-2024.
+ * Copyright © Wynntils 2023-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.screens.trademarket;
@@ -140,7 +140,7 @@ public class TradeMarketSearchResultScreen extends WynntilsContainerScreen<Chest
                 Texture.SORT.width(),
                 Texture.SORT.height(),
                 Texture.SORT,
-                holder::changeSortingMode,
+                (b) -> holder.changeSortingMode(b.byteValue()),
                 holder.getSortingItemTooltip());
         this.addRenderableWidget(sortOptionsButton);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.models.containers.type;
@@ -17,11 +17,11 @@ public interface ScrollableContainerProperty {
 
     Pattern getPreviousItemPattern();
 
-    int getNextItemSlot();
+    short getNextItemSlot();
 
-    int getPreviousItemSlot();
+    short getPreviousItemSlot();
 
-    default Optional<Integer> getScrollButton(AbstractContainerScreen<?> screen, boolean previousPage) {
+    default Optional<Short> getScrollButton(AbstractContainerScreen<?> screen, boolean previousPage) {
         StyledText buttonText = StyledText.fromComponent(screen.getMenu()
                 .slots
                 .get(previousPage ? getPreviousItemSlot() : getNextItemSlot())

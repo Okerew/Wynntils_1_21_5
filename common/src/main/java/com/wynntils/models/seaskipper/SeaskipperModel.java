@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2023-2024.
+ * Copyright © Wynntils 2023-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.models.seaskipper;
@@ -36,7 +36,7 @@ public final class SeaskipperModel extends Model {
     private List<SeaskipperDestination> allDestinations = new ArrayList<>();
     private List<SeaskipperDestination> availableDestinations = new ArrayList<>();
 
-    private int boatSlot = -1;
+    private short boatSlot = -1;
     private int containerId = -2;
 
     public SeaskipperModel() {
@@ -62,9 +62,10 @@ public final class SeaskipperModel extends Model {
 
         for (int i = 0; i < event.getItems().size(); i++) {
             ItemStack item = event.getItems().get(i);
+            short slot = (short) i;
 
             if (boatSlot == -1 && StyledText.fromComponent(item.getHoverName()).equals(OAK_BOAT_NAME)) {
-                boatSlot = i;
+                boatSlot = slot;
                 continue;
             }
 
@@ -86,7 +87,7 @@ public final class SeaskipperModel extends Model {
 
             SeaskipperDestinationProfile profile = destinationOptional.get().profile();
 
-            availableDestinations.add(new SeaskipperDestination(profile, destinationItem, i));
+            availableDestinations.add(new SeaskipperDestination(profile, destinationItem, slot));
         }
 
         // Reload the map
@@ -127,7 +128,7 @@ public final class SeaskipperModel extends Model {
         ContainerUtils.clickOnSlot(
                 boatSlot,
                 containerId,
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 McUtils.containerMenu().getItems());
     }
 
@@ -137,7 +138,7 @@ public final class SeaskipperModel extends Model {
         ContainerUtils.clickOnSlot(
                 destination.slot(),
                 containerId,
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 McUtils.containerMenu().getItems());
     }
 
@@ -150,7 +151,7 @@ public final class SeaskipperModel extends Model {
         List<SeaskipperDestinationProfile> profiles = WynntilsMod.GSON.fromJson(reader, type);
 
         allDestinations = profiles.stream()
-                .map(profile -> new SeaskipperDestination(profile, null, -1))
+                .map(profile -> new SeaskipperDestination(profile, null, (short) -1))
                 .toList();
     }
 }

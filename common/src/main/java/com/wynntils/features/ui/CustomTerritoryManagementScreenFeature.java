@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.features.ui;
@@ -37,9 +37,9 @@ public class CustomTerritoryManagementScreenFeature extends Feature {
     private static final Pattern TERRITORY_MANAGE_ITEM_PATTERN = Pattern.compile("§e§lTerritories \\[.+\\]");
     private static final Pattern MANAGE_TITLE_PATTERN = Pattern.compile(".+: Manage");
     private static final Pattern BACK_BUTTON_PATTERN = Pattern.compile("§7§lBack");
-    private static final int COMPASS_INVENTORY_SLOT = 42;
-    private static final int GUILD_MANAGEMENT_SLOT = 26;
-    private static final int TERRITORY_MANAGEMENT_SLOT = 14;
+    private static final short COMPASS_INVENTORY_SLOT = 42;
+    private static final short GUILD_MANAGEMENT_SLOT = 26;
+    private static final short TERRITORY_MANAGEMENT_SLOT = 14;
 
     @RegisterKeyBind
     private final KeyBind openTerritoryMenu =
@@ -136,7 +136,8 @@ public class CustomTerritoryManagementScreenFeature extends Feature {
             event.setCanceled(true);
 
             AbstractContainerMenu container = event.getMenuType().create(event.getContainerId(), McUtils.inventory());
-            ContainerUtils.clickOnSlot(TERRITORY_MANAGEMENT_SLOT, event.getContainerId(), 0, container.getItems());
+            ContainerUtils.clickOnSlot(
+                    TERRITORY_MANAGEMENT_SLOT, event.getContainerId(), (byte) 0, container.getItems());
         } else if (title.equalsString(Models.Container.CHARACTER_INFO_NAME)) {
             event.setCanceled(true);
 
@@ -144,7 +145,7 @@ public class CustomTerritoryManagementScreenFeature extends Feature {
             openTerritoryManagement = true;
 
             AbstractContainerMenu container = event.getMenuType().create(event.getContainerId(), McUtils.inventory());
-            ContainerUtils.clickOnSlot(GUILD_MANAGEMENT_SLOT, event.getContainerId(), 0, container.getItems());
+            ContainerUtils.clickOnSlot(GUILD_MANAGEMENT_SLOT, event.getContainerId(), (byte) 0, container.getItems());
         }
     }
 

@@ -43,8 +43,8 @@ public final class SkillPointModel extends Model {
     @Persisted
     private final Storage<Map<String, SavableSkillPointSet>> skillPointLoadouts = new Storage<>(new TreeMap<>());
 
-    private static final int TOME_SLOT = 8;
-    private static final int[] SKILL_POINT_TOTAL_SLOTS = {11, 12, 13, 14, 15};
+    private static final short TOME_SLOT = 8;
+    private static final short[] SKILL_POINT_TOTAL_SLOTS = {11, 12, 13, 14, 15};
     private static final int SKILL_POINT_TOME_SLOT = 4;
     private static final int CONTENT_BOOK_SLOT = 62;
     private static final int TOME_MENU_CONTENT_BOOK_SLOT = 89;
@@ -256,7 +256,7 @@ public final class SkillPointModel extends Model {
                 ContainerUtils.shiftClickOnSlot(
                         SKILL_POINT_TOTAL_SLOTS[entry.getKey().ordinal()],
                         containerContent.containerId(),
-                        GLFW.GLFW_MOUSE_BUTTON_RIGHT,
+                        (byte) GLFW.GLFW_MOUSE_BUTTON_RIGHT,
                         containerContent.items());
                 if (!confirmationCompleted) {
                     // confirmation required, force loop to repeat this iteration
@@ -268,7 +268,7 @@ public final class SkillPointModel extends Model {
                 ContainerUtils.clickOnSlot(
                         SKILL_POINT_TOTAL_SLOTS[entry.getKey().ordinal()],
                         containerContent.containerId(),
-                        GLFW.GLFW_MOUSE_BUTTON_RIGHT,
+                        (byte) GLFW.GLFW_MOUSE_BUTTON_RIGHT,
                         containerContent.items());
                 if (!confirmationCompleted) {
                     // needs to exist in both loops in case of 1s only
@@ -286,14 +286,14 @@ public final class SkillPointModel extends Model {
                 ContainerUtils.shiftClickOnSlot(
                         SKILL_POINT_TOTAL_SLOTS[entry.getKey().ordinal()],
                         containerContent.containerId(),
-                        GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                        (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                         containerContent.items());
             }
             for (int i = 0; i < difference1s; i++) {
                 ContainerUtils.clickOnSlot(
                         SKILL_POINT_TOTAL_SLOTS[entry.getKey().ordinal()],
                         containerContent.containerId(),
-                        GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                        (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                         containerContent.items());
             }
         }
@@ -386,7 +386,7 @@ public final class SkillPointModel extends Model {
     }
 
     private void processTotalSkillPoints(ContainerContent content) {
-        for (Integer slot : SKILL_POINT_TOTAL_SLOTS) {
+        for (short slot : SKILL_POINT_TOTAL_SLOTS) {
             Optional<WynnItem> wynnItemOptional =
                     Models.Item.getWynnItem(content.items().get(slot));
             if (wynnItemOptional.isPresent() && wynnItemOptional.get() instanceof SkillPointItem skillPoint) {

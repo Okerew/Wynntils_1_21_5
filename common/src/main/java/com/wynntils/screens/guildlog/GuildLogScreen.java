@@ -75,7 +75,7 @@ public class GuildLogScreen extends WynntilsScreen implements WrappedScreen {
                 (button) -> ContainerUtils.clickOnSlot(
                         holder.BACK_BUTTON_SLOT,
                         wrappedScreenInfo.containerId(),
-                        button,
+                        button.byteValue(),
                         wrappedScreenInfo.containerMenu().getItems()),
                 List.of(Component.translatable("gui.back").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD))));
 
@@ -86,7 +86,7 @@ public class GuildLogScreen extends WynntilsScreen implements WrappedScreen {
                     (button) -> ContainerUtils.clickOnSlot(
                             holder.LOG_SLOTS_MAP.get(logType),
                             wrappedScreenInfo.containerId(),
-                            button,
+                            button.byteValue(),
                             wrappedScreenInfo.containerMenu().getItems()),
                     ComponentUtils.wrapTooltips(
                             List.of(

@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.models.containers.containers;
@@ -34,12 +34,12 @@ public class GuildLogContainer extends Container implements ScrollableContainerP
     }
 
     @Override
-    public int getNextItemSlot() {
+    public short getNextItemSlot() {
         return 45;
     }
 
     @Override
-    public int getPreviousItemSlot() {
+    public short getPreviousItemSlot() {
         return 18;
     }
 

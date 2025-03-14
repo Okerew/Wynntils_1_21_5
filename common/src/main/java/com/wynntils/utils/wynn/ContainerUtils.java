@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2022-2024.
+ * Copyright © Wynntils 2022-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.utils.wynn;
@@ -11,6 +11,7 @@ import java.util.List;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.HashedStack;
 import net.minecraft.network.protocol.game.ServerboundContainerClickPacket;
 import net.minecraft.network.protocol.game.ServerboundContainerClosePacket;
 import net.minecraft.world.inventory.ClickType;
@@ -19,7 +20,7 @@ import net.minecraft.world.item.Items;
 import org.lwjgl.glfw.GLFW;
 
 public final class ContainerUtils {
-    private static final int INVENTORY_SLOTS = 36;
+    private static final short INVENTORY_SLOTS = 36;
 
     public static NonNullList<ItemStack> getItems(Screen screen) {
         if (screen instanceof AbstractContainerScreen<?> containerScreen) {
@@ -30,7 +31,7 @@ public final class ContainerUtils {
         return NonNullList.create();
     }
 
-    public static boolean openInventory(int slotNum) {
+    public static boolean openInventory(short slotNum) {
         int containerId = McUtils.containerMenu().containerId;
         if (containerId != 0) {
             // Another inventory is already open, cannot do this
@@ -39,7 +40,7 @@ public final class ContainerUtils {
 
         NonNullList<ItemStack> items = McUtils.containerMenu().getItems();
         // We need to offset the slot number so that it corresponds to the correct slot in the inventory
-        clickOnSlot(INVENTORY_SLOTS + slotNum, containerId, GLFW.GLFW_MOUSE_BUTTON_LEFT, items);
+        clickOnSlot((short) (INVENTORY_SLOTS + slotNum), containerId, (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT, items);
 
         return true;
     }
@@ -48,9 +49,17 @@ public final class ContainerUtils {
      * Clicks on a slot in the specified container. containerId and the list of items should correspond to the
      * same container!
      */
-    public static void clickOnSlot(int clickedSlot, int containerId, int mouseButton, List<ItemStack> items) {
-        Int2ObjectMap<ItemStack> changedSlots = new Int2ObjectOpenHashMap<>();
-        changedSlots.put(clickedSlot, new ItemStack(Items.AIR));
+    public static void clickOnSlot(short clickedSlot, int containerId, byte mouseButton, List<ItemStack> items) {
+        Int2ObjectMap<HashedStack> changedSlots = new Int2ObjectOpenHashMap<>();
+        changedSlots.put(
+                clickedSlot,
+                HashedStack.create(
+                        new ItemStack(Items.AIR), McUtils.mc().getConnection().decoratedHashOpsGenenerator()));
+
+        List<HashedStack> hashedItems = items.stream()
+                .map(itemStack -> HashedStack.create(
+                        itemStack, McUtils.mc().getConnection().decoratedHashOpsGenenerator()))
+                .toList();
 
         // FIXME: To expand usage of this function, the following variables needs to
         // be properly handled
@@ -62,13 +71,21 @@ public final class ContainerUtils {
                 clickedSlot,
                 mouseButton,
                 ClickType.PICKUP,
-                items.get(clickedSlot),
-                changedSlots));
+                changedSlots,
+                hashedItems.get(clickedSlot)));
     }
 
-    public static void shiftClickOnSlot(int clickedSlot, int containerId, int mouseButton, List<ItemStack> items) {
-        Int2ObjectMap<ItemStack> changedSlots = new Int2ObjectOpenHashMap<>();
-        changedSlots.put(clickedSlot, new ItemStack(Items.AIR));
+    public static void shiftClickOnSlot(short clickedSlot, int containerId, byte mouseButton, List<ItemStack> items) {
+        Int2ObjectMap<HashedStack> changedSlots = new Int2ObjectOpenHashMap<>();
+        changedSlots.put(
+                clickedSlot,
+                HashedStack.create(
+                        new ItemStack(Items.AIR), McUtils.mc().getConnection().decoratedHashOpsGenenerator()));
+
+        List<HashedStack> hashedItems = items.stream()
+                .map(itemStack -> HashedStack.create(
+                        itemStack, McUtils.mc().getConnection().decoratedHashOpsGenenerator()))
+                .toList();
 
         int transactionId = 0;
 
@@ -78,13 +95,21 @@ public final class ContainerUtils {
                 clickedSlot,
                 mouseButton,
                 ClickType.QUICK_MOVE,
-                items.get(clickedSlot),
-                changedSlots));
+                changedSlots,
+                hashedItems.get(clickedSlot)));
     }
 
-    public static void pressKeyOnSlot(int clickedSlot, int containerId, int buttonNum, List<ItemStack> items) {
-        Int2ObjectMap<ItemStack> changedSlots = new Int2ObjectOpenHashMap<>();
-        changedSlots.put(clickedSlot, new ItemStack(Items.AIR));
+    public static void pressKeyOnSlot(short clickedSlot, int containerId, byte buttonNum, List<ItemStack> items) {
+        Int2ObjectMap<HashedStack> changedSlots = new Int2ObjectOpenHashMap<>();
+        changedSlots.put(
+                clickedSlot,
+                HashedStack.create(
+                        new ItemStack(Items.AIR), McUtils.mc().getConnection().decoratedHashOpsGenenerator()));
+
+        List<HashedStack> hashedItems = items.stream()
+                .map(itemStack -> HashedStack.create(
+                        itemStack, McUtils.mc().getConnection().decoratedHashOpsGenenerator()))
+                .toList();
 
         int transactionId = 0;
 
@@ -94,8 +119,8 @@ public final class ContainerUtils {
                 clickedSlot,
                 buttonNum,
                 ClickType.SWAP,
-                items.get(clickedSlot),
-                changedSlots));
+                changedSlots,
+                hashedItems.get(clickedSlot)));
     }
 
     public static void closeContainer(int containerId) {

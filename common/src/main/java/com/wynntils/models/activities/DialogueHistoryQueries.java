@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2022-2024.
+ * Copyright © Wynntils 2022-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.models.activities;
@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 import net.minecraft.world.item.ItemStack;
 
 public class DialogueHistoryQueries {
-    private static final int DIALOGUE_HISTORY_SLOT = 58;
+    private static final short DIALOGUE_HISTORY_SLOT = 58;
     private static final Pattern DIALOGUE_HISTORY_PAGE_PATTERN = Pattern.compile("§8Page (\\d+) of (\\d+)");
     private static final StyledText DIALOGUE_HISTORY = StyledText.fromString("Dialogue History");
 

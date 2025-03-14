@@ -125,9 +125,9 @@ public class TradeMarketBulkSellFeature extends Feature {
             sendAmountMessage = true;
 
             ContainerUtils.clickOnSlot(
-                    AMOUNT_ITEM_SLOT,
+                    (short) AMOUNT_ITEM_SLOT,
                     McUtils.containerMenu().containerId,
-                    0,
+                    (byte) 0,
                     McUtils.containerMenu().getItems());
         }
     }

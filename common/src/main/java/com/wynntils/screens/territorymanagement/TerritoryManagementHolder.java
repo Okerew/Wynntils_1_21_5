@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.screens.territorymanagement;
@@ -27,8 +27,8 @@ import com.wynntils.utils.render.Texture;
 import com.wynntils.utils.type.CappedValue;
 import com.wynntils.utils.type.Pair;
 import com.wynntils.utils.wynn.ContainerUtils;
-import it.unimi.dsi.fastutil.ints.Int2ObjectAVLTreeMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectSortedMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectAVLTreeMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectSortedMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -55,8 +55,8 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
 
     private static final Pattern NEXT_PAGE_PATTERN = Pattern.compile("§a§lNext Page");
     private static final Pattern PREVIOUS_PAGE_PATTERN = Pattern.compile("§a§lPrevious Page");
-    private static final int NEXT_PAGE_SLOT = 27;
-    private static final int PREVIOUS_PAGE_SLOT = 9;
+    private static final short NEXT_PAGE_SLOT = 27;
+    private static final short PREVIOUS_PAGE_SLOT = 9;
 
     private static final int APPLY_BUTTON_SLOT = 0;
     private static final int APPLY_DISABLED_DAMAGE = 17;
@@ -83,7 +83,7 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
     private boolean initialLoadFinished;
 
     // Territory data
-    private Int2ObjectSortedMap<Pair<ItemStack, TerritoryItem>> territories = new Int2ObjectAVLTreeMap<>();
+    private Short2ObjectSortedMap<Pair<ItemStack, TerritoryItem>> territories = new Short2ObjectAVLTreeMap<>();
     private Map<TerritoryItem, TerritoryConnectionType> territoryConnections = Map.of();
 
     // Mode-specific data
@@ -92,7 +92,7 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
     private Set<String> selectedTerritories = new HashSet<>();
     // Note: It seems like Wynn only accepts 1 territory click "request" at a time, if you do more than one,
     //       the server will only process the first one. So, we need to queue the clicks.
-    private int currentClick;
+    private short currentClick;
     private long lastClickTicks;
 
     public TerritoryManagementHolder() {
@@ -105,14 +105,14 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
     public void onContainerSetContent(ContainerSetContentEvent.Post event) {
         if (event.getContainerId() != wrappedScreen.getWrappedScreenInfo().containerId()) return;
 
-        for (int i = 0; i < event.getItems().size(); i++) {
+        for (short i = 0; i < event.getItems().size(); i++) {
             if (i % 9 < 2) continue;
             if (i >= ITEMS_PER_CONTAINER_PAGE) continue;
 
             loadedItems++;
 
             ItemStack itemStack = event.getItems().get(i);
-            int absSlot = getAbsoluteSlot(i);
+            short absSlot = getAbsoluteSlot(i);
 
             // If there is a click in progress,
             // check if it is the response to the current click
@@ -246,7 +246,7 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
         nextRequestTicks = Integer.MAX_VALUE;
         lastItemLoadedTicks = Integer.MAX_VALUE;
         initialLoadFinished = false;
-        territories = new Int2ObjectAVLTreeMap<>();
+        territories = new Short2ObjectAVLTreeMap<>();
         territoryConnections = new HashMap<>();
         selectionMode = false;
         territoryToBeClicked = null;
@@ -358,7 +358,7 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
         }
 
         // Click on the territory item to select/deselect it
-        int absSlot = getAbsoluteSlotForItem(territoryItem);
+        short absSlot = getAbsoluteSlotForItem(territoryItem);
 
         int itemPage = absSlot / ITEMS_PER_PAGE;
 
@@ -420,7 +420,7 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
             ContainerUtils.clickOnSlot(
                     NEXT_PAGE_SLOT,
                     wrappedScreen.getWrappedScreenInfo().containerId(),
-                    GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                    (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                     items);
             return;
         }
@@ -440,7 +440,7 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
             ContainerUtils.clickOnSlot(
                     PREVIOUS_PAGE_SLOT,
                     wrappedScreen.getWrappedScreenInfo().containerId(),
-                    GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                    (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                     items);
             return;
         }
@@ -496,7 +496,7 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
         // A click is in progress, wait for it to finish
         if (currentClick != -1) return;
 
-        int nextSelection = getNextSelectionInQueue();
+        short nextSelection = getNextSelectionInQueue();
 
         if (nextSelection == -1) {
             // If there are no more selections, we are done
@@ -508,11 +508,11 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
         clickOnTerritory(getRelativeSlot(currentClick));
     }
 
-    private void clickOnTerritory(int slot) {
+    private void clickOnTerritory(short slot) {
         ContainerUtils.clickOnSlot(
                 slot,
                 wrappedScreen.getWrappedScreenInfo().containerId(),
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 wrappedScreen.getWrappedScreenInfo().containerMenu().getItems());
     }
 
@@ -524,7 +524,7 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
                 && territories.size() <= ITEMS_PER_PAGE;
     }
 
-    private int getNextSelectionInQueue() {
+    private short getNextSelectionInQueue() {
         if (selectedTerritories.isEmpty()) return -1;
 
         List<TerritoryItem> itemsOnPage = getItemsOnPage(currentPage);
@@ -546,17 +546,17 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
 
     // Returns the actual slot of the territory items, starting from one
     // (a page fits 35 items, as the first two rows are reserved for the page navigation)
-    private int getAbsoluteSlot(int slot) {
+    private short getAbsoluteSlot(short slot) {
         // Both the argument and the return value are 0-indexed
-        return currentPage * ITEMS_PER_PAGE + slot / 9 * ITEMS_PER_ROW + slot % 9 - 2;
+        return (short) (currentPage * ITEMS_PER_PAGE + slot / 9 * ITEMS_PER_ROW + slot % 9 - 2);
     }
 
-    private int getRelativeSlot(int absSlot) {
-        return (absSlot + (absSlot / ITEMS_PER_ROW + 1) * 2) - currentPage * (ITEMS_PER_PAGE + 10);
+    private short getRelativeSlot(short absSlot) {
+        return (short) ((absSlot + (absSlot / ITEMS_PER_ROW + 1) * 2) - currentPage * (ITEMS_PER_PAGE + 10));
     }
 
-    private int getAbsoluteSlotForItem(TerritoryItem territoryItem) {
-        return territories.int2ObjectEntrySet().stream()
+    private short getAbsoluteSlotForItem(TerritoryItem territoryItem) {
+        return (short) territories.short2ObjectEntrySet().stream()
                 .filter(entry -> entry.getValue().b().getName().equals(territoryItem.getName()))
                 .mapToInt(Map.Entry::getKey)
                 .findFirst()
@@ -564,7 +564,7 @@ public class TerritoryManagementHolder extends WrappedScreenHolder<TerritoryMana
     }
 
     private List<TerritoryItem> getItemsOnPage(int page) {
-        return territories.int2ObjectEntrySet().stream()
+        return territories.short2ObjectEntrySet().stream()
                 .filter(entry -> entry.getKey() / ITEMS_PER_PAGE == page)
                 .map(Map.Entry::getValue)
                 .map(Pair::b)

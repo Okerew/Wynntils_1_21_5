@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.models.containers.containers.cosmetics;
@@ -30,12 +30,12 @@ public abstract class CosmeticContainer extends Container implements SearchableC
     }
 
     @Override
-    public int getNextItemSlot() {
+    public short getNextItemSlot() {
         return 8;
     }
 
     @Override
-    public int getPreviousItemSlot() {
+    public short getPreviousItemSlot() {
         return 0;
     }
 

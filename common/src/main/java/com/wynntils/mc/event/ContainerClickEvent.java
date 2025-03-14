@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2021-2024.
+ * Copyright © Wynntils 2021-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.mc.event;
@@ -13,11 +13,12 @@ import net.neoforged.bus.api.ICancellableEvent;
 /** Fired on click in a container */
 public class ContainerClickEvent extends Event implements ICancellableEvent {
     private final AbstractContainerMenu containerMenu;
-    private final int slotNum;
+    private final short slotNum;
     private final ClickType clickType;
     private final int mouseButton;
 
-    public ContainerClickEvent(AbstractContainerMenu containerMenu, int slotNum, ClickType clickType, int mouseButton) {
+    public ContainerClickEvent(
+            AbstractContainerMenu containerMenu, short slotNum, ClickType clickType, int mouseButton) {
         this.containerMenu = containerMenu;
         this.slotNum = slotNum;
         this.clickType = clickType;
@@ -28,7 +29,7 @@ public class ContainerClickEvent extends Event implements ICancellableEvent {
         return containerMenu;
     }
 
-    public int getSlotNum() {
+    public short getSlotNum() {
         return slotNum;
     }
 
