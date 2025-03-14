@@ -4,18 +4,24 @@
  */
 package com.wynntils.mc.mixin;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.wynntils.core.events.MixinHelper;
 import com.wynntils.core.text.StyledText;
 import com.wynntils.handlers.item.ItemAnnotation;
 import com.wynntils.mc.event.ItemTooltipFlagsEvent;
 import com.wynntils.mc.extension.ItemStackExtension;
+import java.util.function.Consumer;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements ItemStackExtension {
@@ -25,25 +31,26 @@ public abstract class ItemStackMixin implements ItemStackExtension {
     @Unique
     private StyledText wynntilsOriginalName;
 
-    // Note: If this mixin method is causing compatibility issues, we have a few options:
-    // 1. Remove the mixin method. It's barely used in Wynntils.
-    // 2. Set the hide additional tooltip flag for the item itself. This is a bit more invasive.
-    @ModifyExpressionValue(
+    @Inject(
             method =
-                    "getTooltipLines(Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/TooltipFlag;)Ljava/util/List;",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            target =
-                                    "Lnet/minecraft/world/item/ItemStack;has(Lnet/minecraft/core/component/DataComponentType;)Z",
-                            ordinal = 2))
-    private boolean redirectGetHideFlags(boolean original) {
+                    "addToTooltip(Lnet/minecraft/core/component/DataComponentType;Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V",
+            at = @At("HEAD"),
+            cancellable = true)
+    private void onAddTooltipInfo(
+            DataComponentType<?> component,
+            Item.TooltipContext context,
+            TooltipDisplay tooltipDisplay,
+            Consumer<Component> tooltipAdder,
+            TooltipFlag tooltipFlag,
+            CallbackInfo ci) {
         ItemStack itemStack = (ItemStack) (Object) this;
         ItemTooltipFlagsEvent.HideAdditionalTooltip event =
-                new ItemTooltipFlagsEvent.HideAdditionalTooltip(itemStack, original);
+                new ItemTooltipFlagsEvent.HideAdditionalTooltip(itemStack, component);
         MixinHelper.post(event);
 
-        return event.getHideAdditionalTooltip();
+        if (event.isCanceled()) {
+            ci.cancel();
+        }
     }
 
     @ModifyVariable(
