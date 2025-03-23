@@ -48,11 +48,10 @@ public abstract class FabricLevelRendererMixin {
             Matrix4f projectionMatrix,
             ResourceHandle<RenderTarget> mainResourceHandle,
             ResourceHandle<RenderTarget> translucentResourceHandle,
-            ResourceHandle<RenderTarget> itemEntityResourceHandle,
-            ResourceHandle<RenderTarget> weatherResourceHandle,
             boolean renderBlockOutline,
             Frustum frustum,
-            ResourceHandle<RenderTarget> entityOutlineResourceHandle,
+            ResourceHandle<RenderTarget> itemEntityResourceHandle,
+            ResourceHandle<RenderTarget> weatherResourceHandle,
             CallbackInfo ci,
             @Local PoseStack poseStack) {
         MixinHelper.post(new RenderTileLevelLastEvent(
