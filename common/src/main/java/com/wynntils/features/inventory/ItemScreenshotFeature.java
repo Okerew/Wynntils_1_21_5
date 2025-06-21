@@ -119,15 +119,15 @@ public class ItemScreenshotFeature extends Feature {
                 Lists.transform(tooltip, Component::getVisualOrderText), NO_POSITIONER);
 
         // draw tooltip to framebuffer, create image
-        McUtils.mc().getMainRenderTarget().unbindWrite();
+        //        McUtils.mc().getMainRenderTarget().unbindWrite();
 
         ByteBufferBuilder byteBuffer = new ByteBufferBuilder(256);
         MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(byteBuffer);
         GuiGraphics guiGraphics = new GuiGraphics(McUtils.mc(), bufferSource);
         RenderTarget fb = new MainTarget(width * 2, height * 2);
-        fb.setClearColor(1f, 1f, 1f, 0f);
+        //        fb.setClearColor(1f, 1f, 1f, 0f);
         fb.createBuffers(width * 2, height * 2);
-        fb.bindWrite(false);
+        //        fb.bindWrite(false);
         ((MinecraftExtension) McUtils.mc()).setOverridenRenderTarget(fb);
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(scalew, scaleh, 1);
@@ -139,9 +139,9 @@ public class ItemScreenshotFeature extends Feature {
                 0);
         guiGraphics.pose().popPose();
         guiGraphics.flush();
-        fb.unbindWrite();
+        //        fb.unbindWrite();
         ((MinecraftExtension) McUtils.mc()).setOverridenRenderTarget(null);
-        McUtils.mc().getMainRenderTarget().bindWrite(true);
+        //        McUtils.mc().getMainRenderTarget().bindWrite(true);
 
         BufferedImage bi = SystemUtils.createScreenshot(fb);
 

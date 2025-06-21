@@ -396,7 +396,7 @@ public final class PoiCreationScreen extends AbstractMapScreen {
 
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-        RenderSystem.enableDepthTest();
+        //        RenderSystem.enableDepthTest();
         renderMap(guiGraphics);
         RenderUtils.enableScissor(
                 guiGraphics,

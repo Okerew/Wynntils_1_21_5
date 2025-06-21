@@ -1,12 +1,10 @@
 /*
- * Copyright © Wynntils 2021-2023.
+ * Copyright © Wynntils 2021-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.utils;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.blaze3d.systems.RenderSystem;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -27,15 +25,15 @@ public final class SystemUtils {
 
     public static BufferedImage createScreenshot(RenderTarget fb) {
         BufferedImage bufferedimage = new BufferedImage(fb.width, fb.height, BufferedImage.TYPE_INT_ARGB);
-        try (NativeImage image = new NativeImage(fb.width, fb.height, false)) {
-            RenderSystem.bindTexture(fb.getColorTextureId());
-            image.downloadTexture(0, false);
-            image.flipY();
-
-            int[] pixelValues = image.makePixelArray();
-
-            bufferedimage.setRGB(0, 0, fb.width, fb.height, pixelValues, 0, fb.width);
-        }
+        //        try (NativeImage image = new NativeImage(fb.width, fb.height, false)) {
+        //            RenderSystem.bindTexture(fb.getColorTextureId());
+        //            image.downloadTexture(0, false);
+        //            image.flipY();
+        //
+        //            int[] pixelValues = image.makePixelArray();
+        //
+        //            bufferedimage.setRGB(0, 0, fb.width, fb.height, pixelValues, 0, fb.width);
+        //        }
         return bufferedimage;
     }
 

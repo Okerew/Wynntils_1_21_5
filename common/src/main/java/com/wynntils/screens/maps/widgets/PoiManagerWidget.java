@@ -4,8 +4,6 @@
  */
 package com.wynntils.screens.maps.widgets;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.wynntils.core.components.Models;
 import com.wynntils.core.text.StyledText;
@@ -224,20 +222,21 @@ public class PoiManagerWidget extends AbstractWidget {
     }
 
     private void renderIcon(PoseStack poseStack) {
-        float[] poiColor = CustomColor.fromInt(poi.getColor().asInt()).asFloatArray();
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.setShaderColor(poiColor[0], poiColor[1], poiColor[2], 1);
-
-        RenderUtils.drawTexturedRect(
-                poseStack,
-                poi.getIcon(),
-                getX() + dividedWidth - (poi.getIcon().width() / 2f),
-                getY() + 10 - (poi.getIcon().height() / 2f));
-
-        RenderSystem.disableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShaderColor(1, 1, 1, 1);
+        //        float[] poiColor = CustomColor.fromInt(poi.getColor().asInt()).asFloatArray();
+        //        RenderSystem.enableBlend();
+        //        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,
+        // GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        //        RenderSystem.setShaderColor(poiColor[0], poiColor[1], poiColor[2], 1);
+        //
+        //        RenderUtils.drawTexturedRect(
+        //                poseStack,
+        //                poi.getIcon(),
+        //                getX() + dividedWidth - (poi.getIcon().width() / 2f),
+        //                getY() + 10 - (poi.getIcon().height() / 2f));
+        //
+        //        RenderSystem.disableBlend();
+        //        RenderSystem.defaultBlendFunc();
+        //        RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
     @Override
