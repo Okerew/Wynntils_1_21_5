@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2022-2024.
+ * Copyright © Wynntils 2022-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.commands;
@@ -141,7 +141,7 @@ public class FunctionCommand extends Command {
                                             ? ChatFormatting.GOLD
                                             : ChatFormatting.YELLOW))
                     .withStyle(style -> style.withClickEvent(
-                            new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/function help " + function.getName())));
+                            new ClickEvent.SuggestCommand("/function help " + function.getName())));
             if (!function.getAliasList().isEmpty()) {
                 String aliasList = String.join(", ", function.getAliasList());
 
@@ -151,8 +151,8 @@ public class FunctionCommand extends Command {
                         .append(Component.literal("]").withStyle(ChatFormatting.GRAY));
             }
 
-            functionComponent.withStyle(style -> style.withHoverEvent(
-                    new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(function.getDescription()))));
+            functionComponent.withStyle(style ->
+                    style.withHoverEvent(new HoverEvent.ShowText(Component.literal(function.getDescription()))));
 
             response.append(functionComponent);
         }
