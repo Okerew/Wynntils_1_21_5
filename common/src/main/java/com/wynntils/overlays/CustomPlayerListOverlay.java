@@ -5,7 +5,6 @@
 package com.wynntils.overlays;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.wynntils.core.consumers.overlays.Overlay;
 import com.wynntils.core.consumers.overlays.OverlayPosition;
@@ -105,7 +104,7 @@ public class CustomPlayerListOverlay extends Overlay {
     }
 
     private void renderPlayerList(GuiGraphics guiGraphics, double animation) {
-        RenderSystem.disableDepthTest();
+        //        RenderSystem.disableDepthTest();
         PoseStack poseStack = guiGraphics.pose();
 
         if (animation < 1) {
@@ -132,7 +131,7 @@ public class CustomPlayerListOverlay extends Overlay {
                 (float) (middle - 11 + HALF_WIDTH * animation),
                 Texture.PLAYER_LIST_OVERLAY.width() - ROLL_WIDTH);
 
-        RenderSystem.enableDepthTest();
+        //        RenderSystem.enableDepthTest();
     }
 
     private void renderRoll(PoseStack poseStack, float xPos, int uOffset) {

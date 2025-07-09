@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.models.containers.containers.personal;
@@ -19,10 +19,10 @@ public abstract class PersonalStorageContainer extends Container implements Sear
 
     private final PersonalStorageType personalStorageType;
     private final int finalPage;
-    private final List<Integer> quickJumpDestinations;
+    private final List<Short> quickJumpDestinations;
 
     protected PersonalStorageContainer(
-            Pattern titlePattern, PersonalStorageType storageType, int finalPage, List<Integer> quickJumpDestinations) {
+            Pattern titlePattern, PersonalStorageType storageType, int finalPage, List<Short> quickJumpDestinations) {
         super(titlePattern);
 
         this.personalStorageType = storageType;
@@ -38,7 +38,7 @@ public abstract class PersonalStorageContainer extends Container implements Sear
         return finalPage;
     }
 
-    public List<Integer> getQuickJumpDestinations() {
+    public List<Short> getQuickJumpDestinations() {
         return Collections.unmodifiableList(quickJumpDestinations);
     }
 
@@ -53,12 +53,12 @@ public abstract class PersonalStorageContainer extends Container implements Sear
     }
 
     @Override
-    public int getNextItemSlot() {
+    public short getNextItemSlot() {
         return 52;
     }
 
     @Override
-    public int getPreviousItemSlot() {
+    public short getPreviousItemSlot() {
         return 51;
     }
 

@@ -58,7 +58,7 @@ public class BulkBuyFeature extends Feature {
     private static final StyledText PRICE_STR = StyledText.fromString("§6Price:");
 
     private BulkBuyWidget bulkBuyWidget;
-    private int bulkBoughtSlotNumber = -1; // Slot number of the thing we're buying
+    private short bulkBoughtSlotNumber = -1; // Slot number of the thing we're buying
     private AbstractContainerMenu bulkBoughtContainer = null; // Shop container we're buying from
     private ItemStack bulkBoughtItemStack = null; // Item we're buying
     private int bulkBoughtAmount = 0; // Amount remaining that we need to buy
@@ -156,7 +156,7 @@ public class BulkBuyFeature extends Feature {
         ContainerUtils.clickOnSlot(
                 bulkBoughtSlotNumber,
                 bulkBoughtContainer.containerId,
-                GLFW.GLFW_MOUSE_BUTTON_RIGHT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_RIGHT,
                 bulkBoughtContainer.getItems());
         --bulkBoughtAmount;
 

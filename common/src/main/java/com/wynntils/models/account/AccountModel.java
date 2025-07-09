@@ -42,7 +42,7 @@ public final class AccountModel extends Model {
     private static final Pattern SILVERBULL_DURATION_PATTERN = Pattern.compile(
             "§7Expiration: §f(?:(?<weeks>\\d+) weeks?)? ?(?:(?<days>\\d+) days?)? ?(?:(?<hours>\\d+) hours?)? ?(?:(?<minutes>\\d+) minutes?)? ?(?:(?<seconds>\\d+) seconds?)?");
     public static final Component SILVERBULL_STAR = Component.literal(" ✮").withStyle(ChatFormatting.AQUA);
-    private static final int COSMETICS_SLOT = 25;
+    private static final short COSMETICS_SLOT = 25;
 
     @Persisted
     private final Storage<ConfirmedBoolean> isVeteran = new Storage<>(ConfirmedBoolean.UNCONFIRMED);

@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2023-2024.
+ * Copyright © Wynntils 2023-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.models.abilitytree;
@@ -29,9 +29,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class AbilityTreeContainerQueries {
-    private static final int ABILITY_TREE_SLOT = 9;
-    private static final int PREVIOUS_PAGE_SLOT = 57;
-    private static final int NEXT_PAGE_SLOT = 59;
+    private static final short ABILITY_TREE_SLOT = 9;
+    private static final short PREVIOUS_PAGE_SLOT = 57;
+    private static final short NEXT_PAGE_SLOT = 59;
     private static final StyledText NEXT_PAGE_ITEM_NAME = StyledText.fromString("§7Next Page");
     private static final StyledText PREVIOUS_PAGE_ITEM_NAME = StyledText.fromString("§7Previous Page");
     private int pageCount;

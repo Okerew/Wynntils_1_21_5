@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.features.utilities;
@@ -35,12 +35,12 @@ public class CharacterSelectionUtilitiesFeature extends Feature {
         if (!(Models.Container.getCurrentContainer() instanceof CharacterSelectionContainer)) return;
 
         KeyMapping[] keyHotbarSlots = McUtils.options().keyHotbarSlots;
-        List<Integer> validSlots = Models.CharacterSelection.getValidCharacterSlots();
+        List<Short> validSlots = Models.CharacterSelection.getValidCharacterSlots();
 
         for (int i = 0; i < Math.min(keyHotbarSlots.length, validSlots.size()); i++) {
             if (!keyHotbarSlots[i].matches(e.getKeyCode(), e.getScanCode())) continue;
 
-            int slot = validSlots.get(i);
+            short slot = validSlots.get(i);
             Models.CharacterSelection.playWithCharacter(slot);
             break;
         }

@@ -23,6 +23,7 @@ import com.wynntils.utils.mc.McUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -183,8 +184,8 @@ public class WynntilsCommand extends Command {
                         () -> Component.translatable("command.wynntils.clearCaches.clickHere")
                                 .withStyle(ChatFormatting.BLUE)
                                 .withStyle(ChatFormatting.UNDERLINE)
-                                .withStyle(style -> style.withClickEvent(
-                                        new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wynntils clearcaches run"))),
+                                .withStyle(style ->
+                                        style.withClickEvent(new ClickEvent.RunCommand("/wynntils clearcaches run"))),
                         false);
 
         return 1;
@@ -248,15 +249,14 @@ public class WynntilsCommand extends Command {
     private int status(CommandContext<CommandSourceStack> context) {
         MutableComponent component =
                 Component.literal("Reading status of Wynntils services from ").withStyle(ChatFormatting.WHITE);
+        URI uri = URI.create(Managers.Url.buildUrl(UrlId.LINK_WYNNTILS_STATUS, Map.of()));
         MutableComponent url = Component.literal(Managers.Url.getUrl(UrlId.LINK_WYNNTILS_STATUS))
                 .withStyle(Style.EMPTY
                         .withColor(ChatFormatting.LIGHT_PURPLE)
                         .withUnderlined(true)
-                        .withClickEvent(new ClickEvent(
-                                ClickEvent.Action.OPEN_URL, Managers.Url.getUrl(UrlId.LINK_WYNNTILS_STATUS)))
-                        .withHoverEvent(new HoverEvent(
-                                HoverEvent.Action.SHOW_TEXT,
-                                Component.literal("Click here to open in your browser."))));
+                        .withClickEvent(new ClickEvent.OpenUrl(uri))
+                        .withHoverEvent(
+                                new HoverEvent.ShowText(Component.literal("Click here to open in your browser."))));
 
         context.getSource().sendSuccess(() -> component.append(url), false);
 
@@ -291,15 +291,14 @@ public class WynntilsCommand extends Command {
     private int donateLink(CommandContext<CommandSourceStack> context) {
         MutableComponent c =
                 Component.literal("You can donate to Wynntils at: ").withStyle(ChatFormatting.AQUA);
+        URI uri = URI.create(Managers.Url.buildUrl(UrlId.LINK_WYNNTILS_PATREON, Map.of()));
         MutableComponent url = Component.literal(Managers.Url.getUrl(UrlId.LINK_WYNNTILS_PATREON))
                 .withStyle(Style.EMPTY
                         .withColor(ChatFormatting.LIGHT_PURPLE)
                         .withUnderlined(true)
-                        .withClickEvent(new ClickEvent(
-                                ClickEvent.Action.OPEN_URL, Managers.Url.getUrl(UrlId.LINK_WYNNTILS_PATREON)))
-                        .withHoverEvent(new HoverEvent(
-                                HoverEvent.Action.SHOW_TEXT,
-                                Component.literal("Click here to open in your browser."))));
+                        .withClickEvent(new ClickEvent.OpenUrl(uri))
+                        .withHoverEvent(
+                                new HoverEvent.ShowText(Component.literal("Click here to open in your browser."))));
 
         context.getSource().sendSuccess(() -> c.append(url), false);
         return 1;
@@ -308,14 +307,13 @@ public class WynntilsCommand extends Command {
     private int discordLink(CommandContext<CommandSourceStack> context) {
         MutableComponent msg = Component.literal("You're welcome to join our Discord server at:\n")
                 .withStyle(ChatFormatting.GOLD);
-        String discordInvite = Managers.Url.getUrl(UrlId.LINK_WYNNTILS_DISCORD_INVITE);
-        MutableComponent link =
-                Component.literal(discordInvite).withStyle(Style.EMPTY.withColor(ChatFormatting.DARK_AQUA));
+        URI uri = URI.create(Managers.Url.buildUrl(UrlId.LINK_WYNNTILS_DISCORD_INVITE, Map.of()));
+        MutableComponent link = Component.literal(Managers.Url.getUrl(UrlId.LINK_WYNNTILS_DISCORD_INVITE))
+                .withStyle(Style.EMPTY.withColor(ChatFormatting.DARK_AQUA));
         link.setStyle(link.getStyle()
-                .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, discordInvite))
-                .withHoverEvent(new HoverEvent(
-                        HoverEvent.Action.SHOW_TEXT,
-                        Component.literal("Click here to join our Discord" + " server."))));
+                .withClickEvent(new ClickEvent.OpenUrl(uri))
+                .withHoverEvent(
+                        new HoverEvent.ShowText(Component.literal("Click here to join our Discord" + " server."))));
         context.getSource().sendSuccess(() -> msg.append(link), false);
         return 1;
     }
@@ -328,21 +326,19 @@ public class WynntilsCommand extends Command {
             failed.append(Component.literal("/wynntils reauth")
                     .withStyle(Style.EMPTY
                             .withColor(ChatFormatting.AQUA)
-                            .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wynntils reauth"))));
+                            .withClickEvent(new ClickEvent.RunCommand("/wynntils reauth"))));
             context.getSource().sendFailure(failed);
             return 1;
         }
 
         String token = Services.WynntilsAccount.getToken();
+        URI uri = URI.create(Managers.Url.buildUrl(UrlId.LINK_WYNNTILS_REGISTER_ACCOUNT, Map.of("token", token)));
 
         MutableComponent text = Component.literal("Wynntils Token ").withStyle(ChatFormatting.AQUA);
         MutableComponent response = Component.literal(token)
                 .withStyle(Style.EMPTY
-                        .withHoverEvent(new HoverEvent(
-                                HoverEvent.Action.SHOW_TEXT, Component.literal("Click me to register an account.")))
-                        .withClickEvent((new ClickEvent(
-                                ClickEvent.Action.OPEN_URL,
-                                Managers.Url.buildUrl(UrlId.LINK_WYNNTILS_REGISTER_ACCOUNT, Map.of("token", token)))))
+                        .withHoverEvent(new HoverEvent.ShowText(Component.literal("Click me to register an account.")))
+                        .withClickEvent((new ClickEvent.OpenUrl(uri)))
                         .withColor(ChatFormatting.DARK_AQUA)
                         .withUnderlined(true));
         text.append(response);
@@ -425,9 +421,8 @@ public class WynntilsCommand extends Command {
         MutableComponent clickComponent = Component.empty();
         clickComponent.setStyle(clickComponent
                 .getStyle()
-                .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/" + command))
-                .withHoverEvent(new HoverEvent(
-                        HoverEvent.Action.SHOW_TEXT, Component.literal("Click here to run this command"))));
+                .withClickEvent(new ClickEvent.SuggestCommand("/" + command))
+                .withHoverEvent(new HoverEvent.ShowText(Component.literal("Click here to run this command"))));
 
         clickComponent.append(Component.literal("/" + command).withStyle(ChatFormatting.GREEN));
         clickComponent.append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY));

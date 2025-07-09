@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2023-2024.
+ * Copyright © Wynntils 2023-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.screens.trademarket;
@@ -14,10 +14,10 @@ import com.wynntils.services.itemfilter.type.ItemSearchQuery;
 import com.wynntils.utils.mc.LoreUtils;
 import com.wynntils.utils.wynn.ContainerUtils;
 import com.wynntils.utils.wynn.ItemUtils;
-import it.unimi.dsi.fastutil.ints.Int2ObjectAVLTreeMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectSortedMap;
 import it.unimi.dsi.fastutil.objects.ObjectSortedSet;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectAVLTreeMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectSortedMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,10 +42,10 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
     private static final int PAGE_BATCH_SIZE = 10;
 
     // Slots
-    private static final int PREVIOUS_PAGE_SLOT = 26;
-    private static final int NEXT_PAGE_SLOT = 35;
-    private static final int BACK_TO_SEARCH_SLOT = 8;
-    private static final int SORT_MODE_SLOT = 53;
+    private static final short PREVIOUS_PAGE_SLOT = 26;
+    private static final short NEXT_PAGE_SLOT = 35;
+    private static final short BACK_TO_SEARCH_SLOT = 8;
+    private static final short SORT_MODE_SLOT = 53;
 
     // Screen
     private TradeMarketSearchResultScreen wrappedScreen;
@@ -63,7 +63,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
     private boolean allPagesLoaded = false;
 
     // Items
-    private Map<Integer, Int2ObjectSortedMap<ItemStack>> itemMap = new TreeMap<>();
+    private Map<Integer, Short2ObjectSortedMap<ItemStack>> itemMap = new TreeMap<>();
     private int pageItemCount = 0;
 
     private List<ItemStack> filteredItems = new ArrayList<>();
@@ -98,7 +98,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
         WrappedScreenInfo wrappedScreenInfo = wrappedScreen.getWrappedScreenInfo();
         if (event.getContainerId() != wrappedScreenInfo.containerId()) return;
 
-        int slot = event.getSlot();
+        short slot = (short) event.getSlot();
 
         // We don't want the items to be set on our custom screen
         event.setCanceled(true);
@@ -149,16 +149,17 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
     public void clickOnItem(ItemStack clickedItem) {
         // When writing this, items only update on page change,
         // so if we don't switch pages, we can just click on the item
-        ObjectSortedSet<Int2ObjectMap.Entry<ItemStack>> currentPageEntries =
-                itemMap.getOrDefault(currentPage, new Int2ObjectAVLTreeMap<>()).int2ObjectEntrySet();
-        for (Int2ObjectMap.Entry<ItemStack> entry : currentPageEntries) {
+        ObjectSortedSet<Short2ObjectMap.Entry<ItemStack>> currentPageEntries = itemMap.getOrDefault(
+                        currentPage, new Short2ObjectAVLTreeMap<>())
+                .short2ObjectEntrySet();
+        for (Short2ObjectMap.Entry<ItemStack> entry : currentPageEntries) {
             if (ItemUtils.isItemEqual(entry.getValue(), clickedItem)) {
                 // Item found on the current page, click on it
                 WrappedScreenInfo wrappedScreenInfo = wrappedScreen.getWrappedScreenInfo();
                 ContainerUtils.clickOnSlot(
-                        entry.getIntKey(),
+                        entry.getShortKey(),
                         wrappedScreenInfo.containerId(),
-                        GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                        (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                         wrappedScreenInfo.containerMenu().getItems());
 
                 return;
@@ -172,7 +173,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
 
             boolean foundItem = false;
 
-            Int2ObjectSortedMap<ItemStack> itemsOnPage = itemMap.get(i);
+            Short2ObjectSortedMap<ItemStack> itemsOnPage = itemMap.get(i);
 
             for (ItemStack itemStack : itemsOnPage.values()) {
                 if (ItemUtils.isItemEqual(itemStack, clickedItem)) {
@@ -196,7 +197,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
         ContainerUtils.clickOnSlot(
                 BACK_TO_SEARCH_SLOT,
                 wrappedScreenInfo.containerId(),
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 wrappedScreenInfo.containerMenu().getItems());
     }
 
@@ -206,7 +207,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
         runOrQueueAction(new QueuedAction(PageLoadingMode.LOAD_ITEMS, itemMap.size() - 1 + PAGE_BATCH_SIZE, null));
     }
 
-    public void changeSortingMode(int mouseButton) {
+    public void changeSortingMode(byte mouseButton) {
         WrappedScreenInfo wrappedScreenInfo = wrappedScreen.getWrappedScreenInfo();
         ContainerUtils.clickOnSlot(
                 SORT_MODE_SLOT,
@@ -253,7 +254,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
         return PAGE_BATCH_SIZE;
     }
 
-    private void handleSetItem(int slot, ItemStack itemStack) {
+    private void handleSetItem(short slot, ItemStack itemStack) {
         // Update the sorting mode tooltip
         if (slot == SORT_MODE_SLOT) {
             sortingButtonItem = itemStack;
@@ -278,8 +279,8 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
         if (slot % 9 >= 7 || slot >= LAST_ITEM_SLOT) return;
 
         // If we have found an empty item, we count them and check if we have the expected amount
-        Int2ObjectSortedMap<ItemStack> currentItems =
-                itemMap.computeIfAbsent(this.currentPage, k -> new Int2ObjectAVLTreeMap<>());
+        Short2ObjectSortedMap<ItemStack> currentItems =
+                itemMap.computeIfAbsent(this.currentPage, k -> new Short2ObjectAVLTreeMap<>());
 
         boolean emptyItem = isEmptyItem(itemStack);
         if (!emptyItem) {
@@ -299,7 +300,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
         }
     }
 
-    private void pageLoadedWhileLoadingItems(Int2ObjectSortedMap<ItemStack> currentItems) {
+    private void pageLoadedWhileLoadingItems(Short2ObjectSortedMap<ItemStack> currentItems) {
         wrappedScreen.setCurrentState(Component.literal("Loading page " + (currentPage + 1) + "..."));
 
         // We only go to the next page if we have the expected amount of items
@@ -350,7 +351,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
     }
 
     private void pageLoadedWhileSelectingItem(
-            Int2ObjectSortedMap<ItemStack> currentItems, int slot, ItemStack itemStack) {
+            Short2ObjectSortedMap<ItemStack> currentItems, short slot, ItemStack itemStack) {
         wrappedScreen.setCurrentState(Component.empty()
                 .append(Component.literal("Clicking on "))
                 .append(requestedItem.getHoverName())
@@ -363,7 +364,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
             ContainerUtils.clickOnSlot(
                     slot,
                     wrappedScreenInfo.containerId(),
-                    GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                    (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                     wrappedScreenInfo.containerMenu().getItems());
 
             startNextQueuedAction();
@@ -388,7 +389,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
 
         pageItemCount = 0;
 
-        int clickSlot;
+        short clickSlot;
         if (this.currentPage < requestedPage) {
             clickSlot = NEXT_PAGE_SLOT;
             this.currentPage++;
@@ -401,7 +402,7 @@ public class TradeMarketSearchResultHolder extends WrappedScreenHolder<TradeMark
         ContainerUtils.clickOnSlot(
                 clickSlot,
                 wrappedScreenInfo.containerId(),
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 wrappedScreenInfo.containerMenu().getItems());
     }
 

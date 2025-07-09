@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.features.inventory;
@@ -22,7 +22,7 @@ import org.lwjgl.glfw.GLFW;
 @ConfigCategory(Category.INVENTORY)
 public class GuildBankHotkeyFeature extends Feature {
     private static final Pattern MANAGE_TITLE_PATTERN = Pattern.compile(".+: Manage");
-    private static final int GUILD_BANK_SLOT = 15;
+    private static final short GUILD_BANK_SLOT = 15;
 
     @RegisterKeyBind
     private final KeyBind guildBankKeybind =
@@ -42,7 +42,7 @@ public class GuildBankHotkeyFeature extends Feature {
             event.setCanceled(true);
 
             AbstractContainerMenu container = event.getMenuType().create(event.getContainerId(), McUtils.inventory());
-            ContainerUtils.clickOnSlot(GUILD_BANK_SLOT, event.getContainerId(), 0, container.getItems());
+            ContainerUtils.clickOnSlot(GUILD_BANK_SLOT, event.getContainerId(), (byte) 0, container.getItems());
         }
     }
 

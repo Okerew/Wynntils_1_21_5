@@ -64,7 +64,8 @@ public class InventoryFunctions {
             if (inventoryArmor == null) return CappedValue.EMPTY;
 
             Optional<DurableItemProperty> durableItemOpt = Models.Item.asWynnItemProperty(
-                    McUtils.inventory().armor.get(inventoryArmor.getSlot()), DurableItemProperty.class);
+                    McUtils.inventory().equipment.items.get(inventoryArmor.getEquipmentSlot()),
+                    DurableItemProperty.class);
 
             if (durableItemOpt.isEmpty()) return CappedValue.EMPTY;
 

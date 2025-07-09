@@ -59,9 +59,9 @@ public class TerritoryManagementScreen extends WynntilsScreen implements Wrapped
     private static final Pair<Integer, Integer> RENDER_AREA_SIZE = new Pair<>(221, 110);
     private static final int TERRITORY_SIZE = 20;
     private static final int TERRITORIES_PER_ROW = RENDER_AREA_SIZE.a() / TERRITORY_SIZE;
-    private static final int BACK_BUTTON_SLOT = 18;
-    private static final int APPLY_BUTTON_SLOT = 0;
-    private static final int LOADOUT_BUTTON_SLOT = 36;
+    private static final short BACK_BUTTON_SLOT = 18;
+    private static final short APPLY_BUTTON_SLOT = 0;
+    private static final short LOADOUT_BUTTON_SLOT = 36;
     private static final int QUICK_FILTER_WIDTH = 150;
 
     // Territory items
@@ -140,7 +140,7 @@ public class TerritoryManagementScreen extends WynntilsScreen implements Wrapped
                     ContainerUtils.clickOnSlot(
                             BACK_BUTTON_SLOT,
                             wrappedScreenInfo.containerId(),
-                            button,
+                            button.byteValue(),
                             wrappedScreenInfo.containerMenu().getItems());
                 },
                 List.of(Component.translatable("gui.back").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD)),
@@ -197,7 +197,7 @@ public class TerritoryManagementScreen extends WynntilsScreen implements Wrapped
                     (button) -> ContainerUtils.clickOnSlot(
                             LOADOUT_BUTTON_SLOT,
                             wrappedScreenInfo.containerId(),
-                            button,
+                            button.byteValue(),
                             wrappedScreenInfo.containerMenu().getItems()),
                     List.of(
                             Component.translatable("feature.wynntils.customTerritoryManagementScreen.loadouts")
@@ -221,7 +221,7 @@ public class TerritoryManagementScreen extends WynntilsScreen implements Wrapped
                     (button) -> ContainerUtils.clickOnSlot(
                             APPLY_BUTTON_SLOT,
                             wrappedScreenInfo.containerId(),
-                            button,
+                            button.byteValue(),
                             wrappedScreenInfo.containerMenu().getItems()),
                     List.of(
                             Component.translatable("feature.wynntils.customTerritoryManagementScreen.applySelection")

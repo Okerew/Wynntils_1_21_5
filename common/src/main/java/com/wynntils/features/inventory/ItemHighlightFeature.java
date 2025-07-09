@@ -4,7 +4,6 @@
  */
 package com.wynntils.features.inventory;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.wynntils.core.components.Models;
 import com.wynntils.core.consumers.features.Feature;
 import com.wynntils.core.persisted.Persisted;
@@ -154,7 +153,7 @@ public class ItemHighlightFeature extends Feature {
         CustomColor color = getHighlightColor(e.getSlot().getItem(), false);
         if (color == CustomColor.NONE) return;
 
-        RenderSystem.enableDepthTest();
+        //        RenderSystem.enableDepthTest();
         RenderUtils.drawTexturedRectWithColor(
                 e.getPoseStack(),
                 Texture.HIGHLIGHT.resource(),
@@ -170,7 +169,7 @@ public class ItemHighlightFeature extends Feature {
                 18,
                 Texture.HIGHLIGHT.width(),
                 Texture.HIGHLIGHT.height());
-        RenderSystem.disableDepthTest();
+        //        RenderSystem.disableDepthTest();
     }
 
     @SubscribeEvent

@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.screens.container.widgets;
@@ -22,10 +22,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 public class QuickJumpButton extends WynntilsButton {
-    private final int destination;
+    private final short destination;
     private final PersonalStorageUtilitiesWidget parent;
 
-    public QuickJumpButton(int x, int y, int destination, PersonalStorageUtilitiesWidget parent) {
+    public QuickJumpButton(int x, int y, short destination, PersonalStorageUtilitiesWidget parent) {
         super(x, y, 16, 16, Component.literal("Container Quick Jump Button"));
 
         this.destination = destination;

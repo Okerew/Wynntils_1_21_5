@@ -4,7 +4,6 @@
  */
 package com.wynntils.features.inventory;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.wynntils.core.components.Managers;
 import com.wynntils.core.components.Models;
 import com.wynntils.core.components.Services;
@@ -195,9 +194,9 @@ public class ContainerSearchFeature extends Feature {
         Boolean result = wynnItemOpt.get().getData().get(WynnItemData.SEARCHED_KEY);
         if (result == null || !result) return;
 
-        RenderSystem.enableDepthTest();
+        //        RenderSystem.enableDepthTest();
         RenderUtils.drawArc(e.getPoseStack(), highlightColor.get(), e.getSlot().x, e.getSlot().y, 100, 1f, 6, 8);
-        RenderSystem.disableDepthTest();
+        //        RenderSystem.disableDepthTest();
     }
 
     @SubscribeEvent
@@ -275,7 +274,7 @@ public class ContainerSearchFeature extends Feature {
                 ContainerUtils.pressKeyOnSlot(
                         Models.Bank.QUICK_JUMP_SLOT,
                         abstractContainerScreen.getMenu().containerId,
-                        0,
+                        (byte) 0,
                         abstractContainerScreen.getMenu().getItems());
                 return;
             }
@@ -296,7 +295,7 @@ public class ContainerSearchFeature extends Feature {
             guildBankLastSearch = System.currentTimeMillis();
         }
 
-        int slot = direction == 1 ? currentContainer.getNextItemSlot() : currentContainer.getPreviousItemSlot();
+        short slot = direction == 1 ? currentContainer.getNextItemSlot() : currentContainer.getPreviousItemSlot();
 
         StyledText name = StyledText.fromComponent(
                 abstractContainerScreen.getMenu().getItems().get(slot).getHoverName());
@@ -312,7 +311,7 @@ public class ContainerSearchFeature extends Feature {
         ContainerUtils.clickOnSlot(
                 slot,
                 abstractContainerScreen.getMenu().containerId,
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 abstractContainerScreen.getMenu().getItems());
     }
 

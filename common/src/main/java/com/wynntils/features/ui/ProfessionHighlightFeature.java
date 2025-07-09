@@ -1,10 +1,9 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.features.ui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.wynntils.core.components.Managers;
 import com.wynntils.core.components.Models;
 import com.wynntils.core.consumers.features.Feature;
@@ -103,7 +102,7 @@ public class ProfessionHighlightFeature extends Feature {
         if (selectedProfession == null) return;
         if (!professionItemPropertyOpt.get().getProfessionTypes().contains(selectedProfession)) return;
 
-        RenderSystem.enableDepthTest();
+        //        RenderSystem.enableDepthTest();
 
         RenderUtils.drawTexturedRectWithColor(
                 event.getPoseStack(),
@@ -117,7 +116,7 @@ public class ProfessionHighlightFeature extends Feature {
                 Texture.HIGHLIGHT.width(),
                 Texture.HIGHLIGHT.height());
 
-        RenderSystem.disableDepthTest();
+        //        RenderSystem.disableDepthTest();
     }
 
     public void setSelectedProfession(ProfessionType professionType) {

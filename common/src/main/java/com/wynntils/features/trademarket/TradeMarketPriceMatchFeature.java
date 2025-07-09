@@ -146,9 +146,9 @@ public class TradeMarketPriceMatchFeature extends Feature {
             sendPriceMessage = true;
 
             ContainerUtils.clickOnSlot(
-                    TradeMarketModel.TM_SELL_PRICE_SLOT,
+                    (short) TradeMarketModel.TM_SELL_PRICE_SLOT,
                     McUtils.containerMenu().containerId,
-                    0,
+                    (byte) 0,
                     McUtils.containerMenu().getItems());
         }
     }

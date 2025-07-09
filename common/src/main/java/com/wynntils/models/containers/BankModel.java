@@ -26,45 +26,45 @@ import net.neoforged.bus.api.SubscribeEvent;
 
 public final class BankModel extends Model {
     @Persisted
-    private final Storage<Integer> finalAccountBankPage = new Storage<>(21);
+    private final Storage<Short> finalAccountBankPage = new Storage<>((short) 21);
 
     @Persisted
-    private final Storage<Integer> finalBlockBankPage = new Storage<>(12);
+    private final Storage<Short> finalBlockBankPage = new Storage<>((short) 12);
 
     @Persisted
-    private final Storage<Integer> finalBookshelfPage = new Storage<>(10);
+    private final Storage<Short> finalBookshelfPage = new Storage<>((short) 10);
 
     @Persisted
-    private final Storage<Integer> finalMiscBucketPage = new Storage<>(10);
+    private final Storage<Short> finalMiscBucketPage = new Storage<>((short) 10);
 
     @Persisted
-    private final Storage<Map<String, Integer>> finalCharacterBankPages = new Storage<>(new TreeMap<>());
+    private final Storage<Map<String, Short>> finalCharacterBankPages = new Storage<>(new TreeMap<>());
 
     @Persisted
-    private final Storage<Map<Integer, String>> customAccountBankPageNames = new Storage<>(new TreeMap<>());
+    private final Storage<Map<Short, String>> customAccountBankPageNames = new Storage<>(new TreeMap<>());
 
     @Persisted
-    private final Storage<Map<Integer, String>> customBlockBankPageNames = new Storage<>(new TreeMap<>());
+    private final Storage<Map<Short, String>> customBlockBankPageNames = new Storage<>(new TreeMap<>());
 
     @Persisted
-    private final Storage<Map<Integer, String>> customBookshelfPageNames = new Storage<>(new TreeMap<>());
+    private final Storage<Map<Short, String>> customBookshelfPageNames = new Storage<>(new TreeMap<>());
 
     @Persisted
-    private final Storage<Map<Integer, String>> customMiscBucketPageNames = new Storage<>(new TreeMap<>());
+    private final Storage<Map<Short, String>> customMiscBucketPageNames = new Storage<>(new TreeMap<>());
 
     @Persisted
-    private final Storage<Map<String, Map<Integer, String>>> customCharacterBankPagesNames =
+    private final Storage<Map<String, Map<Short, String>>> customCharacterBankPagesNames =
             new Storage<>(new TreeMap<>());
 
-    public static final int QUICK_JUMP_SLOT = 7;
+    public static final short QUICK_JUMP_SLOT = 7;
     public static final String FINAL_PAGE_NAME = "\uDB3F\uDFFF";
 
-    private static final int MAX_CHARACTER_BANK_PAGES = 10;
+    private static final short MAX_CHARACTER_BANK_PAGES = 10;
     private static final StyledText LAST_BANK_PAGE_STRING = StyledText.fromString(">§4>§c>§4>§c>");
 
     private boolean editingName;
     private boolean updatedPage;
-    private int currentPage = 1;
+    private short currentPage = 1;
     private PersonalStorageContainer personalStorageContainer = null;
     private PersonalStorageType storageContainerType = null;
 
@@ -126,8 +126,8 @@ public final class BankModel extends Model {
         }
     }
 
-    public String getPageName(int page) {
-        Map<Integer, String> pageNamesMap = getCurrentNameMap();
+    public String getPageName(short page) {
+        Map<Short, String> pageNamesMap = getCurrentNameMap();
 
         if (pageNamesMap == null) return I18n.get("feature.wynntils.personalStorageUtilities.page", page);
 
@@ -151,8 +151,7 @@ public final class BankModel extends Model {
             case CHARACTER_BANK -> {
                 customCharacterBankPagesNames.get().putIfAbsent(Models.Character.getId(), new TreeMap<>());
 
-                Map<Integer, String> nameMap =
-                        customCharacterBankPagesNames.get().get(Models.Character.getId());
+                Map<Short, String> nameMap = customCharacterBankPagesNames.get().get(Models.Character.getId());
 
                 nameMap.put(currentPage, nameToSet);
 
@@ -198,7 +197,7 @@ public final class BankModel extends Model {
         editingName = false;
     }
 
-    public int getFinalPage() {
+    public short getFinalPage() {
         return switch (storageContainerType) {
             case ACCOUNT_BANK -> finalAccountBankPage.get();
             case BLOCK_BANK -> finalBlockBankPage.get();
@@ -213,7 +212,7 @@ public final class BankModel extends Model {
         return storageContainerType;
     }
 
-    public int getCurrentPage() {
+    public short getCurrentPage() {
         return currentPage;
     }
 
@@ -230,14 +229,14 @@ public final class BankModel extends Model {
                 .getMatcher(personalStorageContainer.getPreviousItemPattern());
 
         if (previousPageMatcher.matches()) {
-            currentPage = Integer.parseInt(previousPageMatcher.group(1)) + 1;
+            currentPage = (short) (Short.parseShort(previousPageMatcher.group(1)) + 1);
         }
 
         Matcher nextPageMatcher = StyledText.fromComponent(nextPageItem.getHoverName())
                 .getMatcher(personalStorageContainer.getNextItemPattern());
 
         if (nextPageMatcher.matches()) {
-            currentPage = Integer.parseInt(nextPageMatcher.group(1)) - 1;
+            currentPage = (short) (Short.parseShort(nextPageMatcher.group(1)) - 1);
         }
 
         if (isItemIndicatingLastBankPage(nextPageItem)) {
@@ -273,7 +272,7 @@ public final class BankModel extends Model {
         }
     }
 
-    private Map<Integer, String> getCurrentNameMap() {
+    private Map<Short, String> getCurrentNameMap() {
         return switch (storageContainerType) {
             case ACCOUNT_BANK -> customAccountBankPageNames.get();
             case BLOCK_BANK -> customBlockBankPageNames.get();

@@ -41,7 +41,7 @@
     "MouseHandlerMixin",
     "MultiPlayerGameModeMixin",
     "PackRepositoryMixin",
-    "PlayerMixin",
+    "LivingEntityMixin",
     "PlayerRendererMixin",
     "PlayerTabOverlayMixin",
     "ProgressScreenMixin",
@@ -55,7 +55,6 @@
     "accessors.ChatScreenAccessor",
     "accessors.ClientboundBossEventPacketAccessor",
     "accessors.ClientboundSetPlayerTeamPacketAccessor",
-    "accessors.ItemStackInfoAccessor",
     "accessors.LerpingBossEventAccessor",
     "accessors.MinecraftAccessor",
     "accessors.OptionsAccessor"

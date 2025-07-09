@@ -125,7 +125,7 @@ public final class GuildModel extends Model {
 
     private static final int MEMBERS_SLOT = 0;
     private static final int OBJECTIVES_SLOT = 13;
-    private static final int DIPLOMACY_MENU_SLOT = 26;
+    private static final short DIPLOMACY_MENU_SLOT = 26;
     private static final List<Integer> DIPLOMACY_SLOTS = List.of(2, 3, 4, 5, 6, 7, 8);
 
     private static final List<Integer> OBJECTIVE_GOALS = List.of(5, 15, 30);

@@ -31,12 +31,12 @@ public class TradeMarketFiltersContainer extends Container
     }
 
     @Override
-    public int getNextItemSlot() {
+    public short getNextItemSlot() {
         return 52;
     }
 
     @Override
-    public int getPreviousItemSlot() {
+    public short getPreviousItemSlot() {
         return 50;
     }
 

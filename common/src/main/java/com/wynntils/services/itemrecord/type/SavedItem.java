@@ -11,8 +11,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.mojang.serialization.JsonOps;
-import com.wynntils.core.WynntilsMod;
 import com.wynntils.core.components.Models;
 import com.wynntils.models.items.WynnItem;
 import com.wynntils.models.items.encoding.type.EncodingSettings;
@@ -26,8 +24,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.Unbreakable;
+import net.minecraft.world.item.component.TooltipDisplay;
 
 public record SavedItem(String base64, Set<String> categories, ItemStack itemStack) implements Comparable<SavedItem> {
     // This is the encoding settings used to encode the item when it was saved
@@ -80,41 +77,21 @@ public record SavedItem(String base64, Set<String> categories, ItemStack itemSta
             // Get categories from jsonObject
             Set<String> categories = context.deserialize(jsonObject.get("categories"), Set.class);
 
-            ItemStack itemStack;
-            if (jsonObject.has("itemStack")) {
-                // For newer items we can use the itemstack codec to deserialize the item
-                JsonElement itemStackJson = jsonObject.get("itemStack");
-                itemStack = ItemStack.CODEC
-                        .parse(JsonOps.INSTANCE, itemStackJson)
-                        .result()
-                        .orElseThrow(() -> new JsonParseException("Failed to decode ItemStack"));
-            } else if (jsonObject.has("itemStackInfo")) {
-                // Old items did not use the codec so will rely on the previously stored itemstackinfo
-                ItemStackInfo info = context.deserialize(jsonObject.get("itemStackInfo"), ItemStackInfo.class);
+            // Get itemStackInfo from jsonObject
+            ItemStackInfo itemStackInfo = context.deserialize(jsonObject.get("itemStackInfo"), ItemStackInfo.class);
 
-                itemStack = new ItemStack(Item.byId(info.itemId()), 1);
+            // Create itemStack from itemStackInfo
+            ItemStack itemStack = new ItemStack(Item.byId(itemStackInfo.itemId), 1);
+            DataComponentMap.Builder componentsBuilder = DataComponentMap.builder()
+                    .set(DataComponents.DAMAGE, itemStackInfo.damage)
+                    .set(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+                    .set(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT);
 
-                DataComponentMap.Builder componentsBuilder = DataComponentMap.builder()
-                        .set(DataComponents.DAMAGE, info.damage())
-                        .set(DataComponents.UNBREAKABLE, new Unbreakable(false))
-                        .set(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE);
-
-                if (info.color() != -1) {
-                    componentsBuilder.set(DataComponents.DYED_COLOR, new DyedItemColor(info.color(), false));
-                }
-
-                itemStack.applyComponents(componentsBuilder.build());
-
-                // Also hide the attribute modifiers tooltip
-                itemStack.set(
-                        DataComponents.ATTRIBUTE_MODIFIERS,
-                        itemStack
-                                .getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
-                                .withTooltip(false));
-            } else {
-                WynntilsMod.error("SavedItem has no itemStack or itemStackInfo");
-                itemStack = ItemStack.EMPTY;
+            if (itemStackInfo.color != -1) {
+                componentsBuilder.set(DataComponents.DYED_COLOR, new DyedItemColor(itemStackInfo.color));
             }
+
+            itemStack.applyComponents(componentsBuilder.build());
 
             return new SavedItem(base64, categories, itemStack);
         }
@@ -129,17 +106,28 @@ public record SavedItem(String base64, Set<String> categories, ItemStack itemSta
             // Add categories to jsonObject
             jsonObject.add("categories", context.serialize(src.categories()));
 
-            // Use the itemstack codec to serialize the item
-            JsonElement itemStackJson = ItemStack.CODEC
-                    .encodeStart(JsonOps.INSTANCE, src.itemStack())
-                    .result()
-                    .orElseThrow(() -> new JsonParseException("Failed to encode ItemStack"));
+            ItemStack itemStack = src.itemStack();
 
-            jsonObject.add("itemStack", itemStackJson);
+            DataComponentMap components = itemStack.getComponents();
+
+            // Leather armor can be dyed, we need to store the color
+            int color = components
+                    .getOrDefault(DataComponents.DYED_COLOR, new DyedItemColor(-1))
+                    .rgb();
+
+            int damage = components.getOrDefault(DataComponents.DAMAGE, 0);
+            boolean unbreakable = components.has(DataComponents.UNBREAKABLE);
+
+            // Note: HideFlags is kept as a boolean for compatibility with the old system
+            ItemStackInfo itemStackInfo =
+                    new ItemStackInfo(Item.getId(itemStack.getItem()), damage, unbreakable, color);
+
+            // Add itemStackInfo to jsonObject
+            jsonObject.add("itemStackInfo", context.serialize(itemStackInfo));
 
             return jsonObject;
         }
     }
 
-    private record ItemStackInfo(int itemId, int damage, int color) {}
+    private record ItemStackInfo(int itemId, int damage, boolean unbreakable, int color) {}
 }

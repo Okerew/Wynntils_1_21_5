@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2024.
+ * Copyright © Wynntils 2024-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.models.containers.containers;
@@ -29,12 +29,12 @@ public class AspectsContainer extends Container implements ScrollableContainerPr
     }
 
     @Override
-    public int getNextItemSlot() {
+    public short getNextItemSlot() {
         return 59;
     }
 
     @Override
-    public int getPreviousItemSlot() {
+    public short getPreviousItemSlot() {
         return 57;
     }
 }

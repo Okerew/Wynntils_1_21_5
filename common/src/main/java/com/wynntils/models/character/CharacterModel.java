@@ -42,9 +42,9 @@ public final class CharacterModel extends Model {
     private static final Pattern INFO_MENU_CLASS_PATTERN = Pattern.compile("§7Class: §f(.+)");
     private static final Pattern INFO_MENU_LEVEL_PATTERN = Pattern.compile("§7Combat Lv: §f(\\d+)");
 
-    public static final int CHARACTER_INFO_SLOT = 7;
-    private static final int PROFESSION_INFO_SLOT = 17;
-    public static final int GUILD_MENU_SLOT = 26;
+    public static final short CHARACTER_INFO_SLOT = 7;
+    private static final short PROFESSION_INFO_SLOT = 17;
+    public static final short GUILD_MENU_SLOT = 26;
 
     private boolean inCharacterSelection;
     private boolean hasCharacter;

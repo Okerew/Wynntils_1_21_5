@@ -26,26 +26,26 @@ import org.lwjgl.glfw.GLFW;
 
 public class GuildLogHolder extends WrappedScreenHolder<GuildLogScreen> {
     private static final Pattern TITLE_PATTERN = Pattern.compile(".+'s? Log: (.+)");
-    public static final int BACK_BUTTON_SLOT = 0;
+    public static final short BACK_BUTTON_SLOT = 0;
     // If a change is not loaded after this delay, force the next step
     private static final int FORCED_LOAD_DELAY = 20;
     private static final int LOGS_PER_PAGE = 32;
-    private static final int NEXT_PAGE_SLOT = 45;
+    private static final short NEXT_PAGE_SLOT = 45;
     private static final int REQUEST_TIMEOUT = 5;
 
-    public static Map<GuildLogType, Integer> LOG_SLOTS_MAP = Map.of(
+    public static final Map<GuildLogType, Short> LOG_SLOTS_MAP = Map.of(
             GuildLogType.GENERAL,
-            2,
+            (short) 2,
             GuildLogType.OBJECTIVES,
-            3,
+            (short) 3,
             GuildLogType.WARS,
-            4,
+            (short) 4,
             GuildLogType.ECONOMY,
-            5,
+            (short) 5,
             GuildLogType.PUBLIC_BANK,
-            6,
+            (short) 6,
             GuildLogType.HIGH_RANKED_BANK,
-            7);
+            (short) 7);
 
     public List<GuildLogItem> guildLogItems = new ArrayList<>();
 
@@ -93,7 +93,7 @@ public class GuildLogHolder extends WrappedScreenHolder<GuildLogScreen> {
         ContainerUtils.clickOnSlot(
                 NEXT_PAGE_SLOT,
                 wrappedScreen.getWrappedScreenInfo().containerId(),
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 wrappedScreen.getWrappedScreenInfo().containerMenu().getItems());
 
         loadedLogs = 0;

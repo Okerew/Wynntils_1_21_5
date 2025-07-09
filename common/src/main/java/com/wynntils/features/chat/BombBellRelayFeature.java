@@ -41,13 +41,10 @@ public class BombBellRelayFeature extends Feature {
     @SubscribeEvent
     public void onBombBell(BombEvent.BombBell event) {
         if (clickableMessage.get()) {
-            ClickEvent clickEvent = new ClickEvent(
-                    ClickEvent.Action.RUN_COMMAND,
-                    "/switch " + event.getBombInfo().server());
-            HoverEvent hoverEvent = new HoverEvent(
-                    HoverEvent.Action.SHOW_TEXT,
-                    Component.literal(
-                            "Click to switch to " + event.getBombInfo().server()));
+            ClickEvent clickEvent =
+                    new ClickEvent.RunCommand("/switch " + event.getBombInfo().server());
+            HoverEvent hoverEvent = new HoverEvent.ShowText(Component.literal(
+                    "Click to switch to " + event.getBombInfo().server()));
 
             StyledText newMessage = event.getMessage().map(part -> {
                 StyledTextPart newPart = part.withStyle(partStyle -> partStyle.withClickEvent(clickEvent));

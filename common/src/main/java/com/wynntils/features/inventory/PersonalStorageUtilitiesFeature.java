@@ -38,9 +38,9 @@ public class PersonalStorageUtilitiesFeature extends Feature {
     private static final Pattern PAGE_PATTERN = Pattern.compile("§7- §f.*§8 Page (\\d+)");
 
     private boolean quickJumping = false;
-    private int currentPage = 1;
-    private int lastPage = 21;
-    private int pageDestination = 1;
+    private short currentPage = 1;
+    private short lastPage = 21;
+    private short pageDestination = 1;
     private PersonalStorageContainer storageContainer;
     private PersonalStorageUtilitiesWidget widget;
 
@@ -136,7 +136,7 @@ public class PersonalStorageUtilitiesFeature extends Feature {
         widget.toggleEditInput(false);
     }
 
-    public void jumpToDestination(int destination) {
+    public void jumpToDestination(short destination) {
         quickJumping = true;
         pageDestination = destination;
 
@@ -164,20 +164,20 @@ public class PersonalStorageUtilitiesFeature extends Feature {
     }
 
     private boolean tryToQuickJump() {
-        int target;
+        byte target;
 
         if (storageContainer.getQuickJumpDestinations().contains(pageDestination)) {
-            target = storageContainer.getQuickJumpDestinations().indexOf(pageDestination);
+            target = (byte) storageContainer.getQuickJumpDestinations().indexOf(pageDestination);
         } else {
-            int closest = storageContainer.getQuickJumpDestinations().getFirst();
+            short closest = storageContainer.getQuickJumpDestinations().getFirst();
 
-            for (int destination : storageContainer.getQuickJumpDestinations()) {
+            for (short destination : storageContainer.getQuickJumpDestinations()) {
                 if (Math.abs(pageDestination - destination) < Math.abs(pageDestination - closest)) {
                     closest = destination;
                 }
             }
 
-            target = storageContainer.getQuickJumpDestinations().indexOf(closest);
+            target = (byte) storageContainer.getQuickJumpDestinations().indexOf(closest);
         }
 
         if (pageDestination >= currentPage
@@ -193,7 +193,7 @@ public class PersonalStorageUtilitiesFeature extends Feature {
                 Matcher pageMatcher = line.getMatcher(PAGE_PATTERN);
 
                 if (pageMatcher.matches()
-                        && Integer.parseInt(pageMatcher.group(1))
+                        && Short.parseShort(pageMatcher.group(1))
                                 == storageContainer.getQuickJumpDestinations().get(target)) {
                     ContainerUtils.pressKeyOnSlot(
                             storageContainer.getNextItemSlot(),
@@ -229,7 +229,7 @@ public class PersonalStorageUtilitiesFeature extends Feature {
         ContainerUtils.clickOnSlot(
                 storageContainer.getNextItemSlot(),
                 storageContainer.getContainerId(),
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 McUtils.containerMenu().getItems());
     }
 
@@ -237,7 +237,7 @@ public class PersonalStorageUtilitiesFeature extends Feature {
         ContainerUtils.clickOnSlot(
                 storageContainer.getPreviousItemSlot(),
                 storageContainer.getContainerId(),
-                GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 McUtils.containerMenu().getItems());
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2022-2023.
+ * Copyright © Wynntils 2022-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.mc.mixin;
@@ -37,7 +37,8 @@ public abstract class MultiPlayerGameModeMixin {
             int containerId, int slotId, int mouseButton, ClickType clickType, Player player, CallbackInfo ci) {
         if (containerId != player.containerMenu.containerId) return;
 
-        ContainerClickEvent event = new ContainerClickEvent(player.containerMenu, slotId, clickType, mouseButton);
+        ContainerClickEvent event =
+                new ContainerClickEvent(player.containerMenu, (short) slotId, clickType, mouseButton);
         MixinHelper.post(event);
         if (event.isCanceled()) {
             ci.cancel();

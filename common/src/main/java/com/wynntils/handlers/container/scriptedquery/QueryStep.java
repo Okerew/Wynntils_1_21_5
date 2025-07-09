@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2023-2024.
+ * Copyright © Wynntils 2023-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.handlers.container.scriptedquery;
@@ -44,32 +44,32 @@ public class QueryStep {
 
     // region Builder API actions
 
-    public static QueryStep useItemInHotbar(int slotNum) {
+    public static QueryStep useItemInHotbar(short slotNum) {
         return new QueryStep((container) -> ContainerUtils.openInventory(slotNum));
     }
 
-    public static QueryStep clickOnSlot(int slotNum) {
+    public static QueryStep clickOnSlot(short slotNum) {
         return new QueryStep(container -> {
             ContainerUtils.clickOnSlot(
-                    slotNum, container.containerId(), GLFW.GLFW_MOUSE_BUTTON_LEFT, container.items());
+                    slotNum, container.containerId(), (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT, container.items());
             return true;
         });
     }
 
-    public static QueryStep clickOnSlot(int slotNum, Supplier<Integer> mouseButtonSupplier) {
+    public static QueryStep clickOnSlot(short slotNum, Supplier<Byte> mouseButtonSupplier) {
         return new QueryStep(container -> {
             ContainerUtils.clickOnSlot(slotNum, container.containerId(), mouseButtonSupplier.get(), container.items());
             return true;
         });
     }
 
-    public static QueryStep clickOnMatchingSlot(int slotNum, Item expectedItemType, StyledText expectedItemName) {
+    public static QueryStep clickOnMatchingSlot(short slotNum, Item expectedItemType, StyledText expectedItemName) {
         return new QueryStep(container -> {
             if (!ScriptedContainerQuery.containerHasSlot(container, slotNum, expectedItemType, expectedItemName))
                 throw new ContainerQueryException("Cannot find matching slot");
 
             ContainerUtils.clickOnSlot(
-                    slotNum, container.containerId(), GLFW.GLFW_MOUSE_BUTTON_LEFT, container.items());
+                    slotNum, container.containerId(), (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT, container.items());
             return true;
         });
     }

@@ -1,12 +1,14 @@
 /*
- * Copyright © Wynntils 2023-2024.
+ * Copyright © Wynntils 2023-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.mc.event;
 
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
 public abstract class ItemTooltipFlagsEvent extends Event {
     private final ItemStack itemStack;
@@ -36,20 +38,16 @@ public abstract class ItemTooltipFlagsEvent extends Event {
         }
     }
 
-    public static final class HideAdditionalTooltip extends ItemTooltipFlagsEvent {
-        private boolean hideTooltip;
+    public static final class HideAdditionalTooltip extends ItemTooltipFlagsEvent implements ICancellableEvent {
+        private final DataComponentType<?> dataComponent;
 
-        public HideAdditionalTooltip(ItemStack itemStack, boolean hideTooltip) {
+        public HideAdditionalTooltip(ItemStack itemStack, DataComponentType<?> dataComponent) {
             super(itemStack);
-            this.hideTooltip = hideTooltip;
+            this.dataComponent = dataComponent;
         }
 
-        public boolean getHideAdditionalTooltip() {
-            return hideTooltip;
-        }
-
-        public void setHideAdditionalTooltip(boolean hideTooltip) {
-            this.hideTooltip = hideTooltip;
+        public DataComponentType<?> getDataComponent() {
+            return dataComponent;
         }
     }
 }

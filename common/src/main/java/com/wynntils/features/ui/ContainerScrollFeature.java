@@ -1,5 +1,5 @@
 /*
- * Copyright © Wynntils 2023-2024.
+ * Copyright © Wynntils 2023-2025.
  * This file is released under LGPLv3. See LICENSE for full license details.
  */
 package com.wynntils.features.ui;
@@ -34,7 +34,7 @@ public class ContainerScrollFeature extends Feature {
         boolean scrollBack = event.isScrollingUp() ^ invertScroll.get();
 
         if (Models.Container.getCurrentContainer() instanceof ScrollableContainerProperty scrollableContainer) {
-            Optional<Integer> slot = scrollableContainer.getScrollButton(gui, scrollBack);
+            Optional<Short> slot = scrollableContainer.getScrollButton(gui, scrollBack);
 
             if (slot.isEmpty()) return;
 
@@ -44,7 +44,7 @@ public class ContainerScrollFeature extends Feature {
             ContainerUtils.clickOnSlot(
                     slot.get(),
                     gui.getMenu().containerId,
-                    GLFW.GLFW_MOUSE_BUTTON_LEFT,
+                    (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT,
                     gui.getMenu().getItems());
         }
     }

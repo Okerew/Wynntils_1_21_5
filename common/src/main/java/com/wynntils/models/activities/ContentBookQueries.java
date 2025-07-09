@@ -42,9 +42,9 @@ public class ContentBookQueries {
     // (fixes filters not being able to be right clicked as of a new Wynn shadow patch)
     private static final boolean REVERSE_DIRECTION = false;
 
-    private static final int CHANGE_VIEW_SLOT = 66;
+    private static final short CHANGE_VIEW_SLOT = 66;
     private static final int PROGRESS_SLOT = 68;
-    private static final int NEXT_PAGE_SLOT = 69;
+    private static final short NEXT_PAGE_SLOT = 69;
 
     private static final StyledText SCROLL_DOWN_TEXT = StyledText.fromString("Scroll Down");
     private static final String FILTER_ITEM_TITLE = "Filter";
@@ -54,7 +54,7 @@ public class ContentBookQueries {
 
     private String selectedFilter;
     private String activeFilter;
-    private int filterChangeDirection;
+    private byte filterChangeDirection;
     private int filterLoopCount;
 
     private MessageContainer stateMessageContainer;
@@ -153,8 +153,8 @@ public class ContentBookQueries {
                     if (REVERSE_DIRECTION) {
                         // Inverse the filter change direction, if we are allowed to go in a reverse direction
                         filterChangeDirection = filterChangeDirection == GLFW.GLFW_MOUSE_BUTTON_RIGHT
-                                ? GLFW.GLFW_MOUSE_BUTTON_LEFT
-                                : GLFW.GLFW_MOUSE_BUTTON_RIGHT;
+                                ? (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT
+                                : (byte) GLFW.GLFW_MOUSE_BUTTON_RIGHT;
                     }
                 })
                 .repeat(
@@ -210,7 +210,7 @@ public class ContentBookQueries {
         return null;
     }
 
-    private int getFilterChangeDirection(ItemStack itemStack, String targetFilter) {
+    private byte getFilterChangeDirection(ItemStack itemStack, String targetFilter) {
         StyledText itemName = ItemUtils.getItemName(itemStack);
         if (!REVERSE_DIRECTION || !itemName.equals(StyledText.fromString(FILTER_ITEM_TITLE))) {
             return GLFW.GLFW_MOUSE_BUTTON_LEFT;
@@ -251,7 +251,7 @@ public class ContentBookQueries {
         if (forward < 0) forward += filterCount;
         if (backward < 0) backward += filterCount;
 
-        return forward < backward ? GLFW.GLFW_MOUSE_BUTTON_LEFT : GLFW.GLFW_MOUSE_BUTTON_RIGHT;
+        return (byte) (forward < backward ? GLFW.GLFW_MOUSE_BUTTON_LEFT : GLFW.GLFW_MOUSE_BUTTON_RIGHT);
     }
 
     private ContainerContentVerification getContentBookFilterChangeVerification() {
@@ -328,12 +328,13 @@ public class ContentBookQueries {
                 // if so, click it, otherwise click on next slot (if available)
                 .repeat(
                         c -> {
-                            int slot = findTrackedActivity(c, name, activityType);
+                            short slot = findTrackedActivity(c, name, activityType);
                             // Not found, try to go to next page
                             if (slot == -1) return true;
 
                             // Found it, now click it
-                            ContainerUtils.clickOnSlot(slot, c.containerId(), GLFW.GLFW_MOUSE_BUTTON_LEFT, c.items());
+                            ContainerUtils.clickOnSlot(
+                                    slot, c.containerId(), (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT, c.items());
                             return false;
                         },
                         QueryStep.clickOnMatchingSlot(NEXT_PAGE_SLOT, Items.GOLDEN_SHOVEL, SCROLL_DOWN_TEXT))
@@ -343,8 +344,8 @@ public class ContentBookQueries {
                 .execute(() -> {
                     // Inverse the filter change direction
                     filterChangeDirection = filterChangeDirection == GLFW.GLFW_MOUSE_BUTTON_RIGHT
-                            ? GLFW.GLFW_MOUSE_BUTTON_LEFT
-                            : GLFW.GLFW_MOUSE_BUTTON_RIGHT;
+                            ? (byte) GLFW.GLFW_MOUSE_BUTTON_LEFT
+                            : (byte) GLFW.GLFW_MOUSE_BUTTON_RIGHT;
                 })
                 .repeat(
                         c -> {
@@ -372,8 +373,8 @@ public class ContentBookQueries {
         query.executeQuery();
     }
 
-    private int findTrackedActivity(ContainerContent container, String name, ActivityType activityType) {
-        for (int slot = 0; slot < 54; slot++) {
+    private short findTrackedActivity(ContainerContent container, String name, ActivityType activityType) {
+        for (short slot = 0; slot < 54; slot++) {
             ItemStack itemStack = container.items().get(slot);
             Optional<ActivityItem> activityItemOpt = Models.Item.asWynnItem(itemStack, ActivityItem.class);
             if (activityItemOpt.isEmpty()) continue;

@@ -264,8 +264,9 @@ jobs:
           name: Wynntils (${{ matrix.modloader }}) ${{ needs.set-version.outputs.tag }}
           version: ${{ needs.set-version.outputs.tag }}
           version-type: release
-          game-versions: 1.21.4
-          changelog: ${{ steps.changelog.outputs.raw }}
+
+          game-versions: 1.21.5
+          changelog: ${{ needs.changelog.outputs.changelog }}
 
           loaders: ${{ matrix.modloader }}
           java: 21
