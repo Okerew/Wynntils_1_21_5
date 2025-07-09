@@ -18,7 +18,7 @@ Wynntils is based on Minecraft 1.21.5 using Architectury, and supports **Fabric*
 
 Downloading a release
 ========
-You can download the latest build from our [releases page](https://github.com/Wynntils/Wynntils/releases). You can also download the latest build from our [Modrinth Page](https://modrinth.com/mod/wynntils) and [CurseForge](https://www.curseforge.com/minecraft/mc-mods/wynntils).
+Download from github releases, note this wont have the best perfomance and might be buggy the only thing i did was fix compilation errors for 1.21.5 widener really.
 
 Pull Requests
 ========
