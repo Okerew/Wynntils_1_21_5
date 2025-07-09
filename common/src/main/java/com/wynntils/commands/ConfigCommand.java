@@ -290,9 +290,9 @@ public class ConfigCommand extends Command {
 
         int newId = Managers.Overlay.extendOverlayGroup(overlayGroupHolder);
 
-        Managers.Config.loadConfigOptions(true, false);
+        Managers.Config.reloadConfiguration(false);
         Managers.Config.saveConfig();
-        Managers.Config.reloadConfiguration();
+        Managers.Config.reloadConfiguration(true);
 
         context.getSource()
                 .sendSuccess(
@@ -322,8 +322,9 @@ public class ConfigCommand extends Command {
 
         Managers.Overlay.removeIdFromOverlayGroup(overlayGroupHolder, id);
 
-        Managers.Config.loadConfigOptions(true, false);
+        Managers.Config.reloadConfiguration(false);
         Managers.Config.saveConfig();
+        Managers.Config.reloadConfiguration(true);
 
         context.getSource()
                 .sendSuccess(
@@ -341,7 +342,7 @@ public class ConfigCommand extends Command {
     }
 
     private int reloadAllConfigOptions(CommandContext<CommandSourceStack> context) {
-        Managers.Config.reloadConfiguration();
+        Managers.Config.reloadConfiguration(true);
         Managers.Config.saveConfig();
 
         context.getSource()

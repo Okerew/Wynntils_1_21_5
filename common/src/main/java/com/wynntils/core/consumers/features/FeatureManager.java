@@ -150,6 +150,7 @@ import com.wynntils.features.ui.WynncraftButtonFeature;
 import com.wynntils.features.ui.WynncraftPauseScreenFeature;
 import com.wynntils.features.ui.WynntilsContentBookFeature;
 import com.wynntils.features.utilities.AutoApplyResourcePackFeature;
+import com.wynntils.features.utilities.AutoSkipCutscenesFeature;
 import com.wynntils.features.utilities.CharacterSelectionUtilitiesFeature;
 import com.wynntils.features.utilities.FixCrosshairPositionFeature;
 import com.wynntils.features.utilities.GammabrightFeature;
@@ -169,6 +170,7 @@ import com.wynntils.features.wynntils.FixPacketBugsFeature;
 import com.wynntils.features.wynntils.TelemetryFeature;
 import com.wynntils.features.wynntils.UpdatesFeature;
 import com.wynntils.features.wynntils.WeeklyConfigBackupFeature;
+import com.wynntils.features.wynntils.WynntilsHintMessagesFeature;
 import com.wynntils.mc.event.ClientsideMessageEvent;
 import com.wynntils.mc.event.CommandsAddedEvent;
 import com.wynntils.utils.mc.McUtils;
@@ -379,6 +381,7 @@ public final class FeatureManager extends Manager {
 
         // region utilities
         registerFeature(new AutoApplyResourcePackFeature());
+        registerFeature(new AutoSkipCutscenesFeature());
         registerFeature(new CharacterSelectionUtilitiesFeature());
         registerFeature(new FixCrosshairPositionFeature());
         registerFeature(new GammabrightFeature());
@@ -401,6 +404,7 @@ public final class FeatureManager extends Manager {
         registerFeature(new TelemetryFeature());
         registerFeature(new UpdatesFeature());
         registerFeature(new WeeklyConfigBackupFeature());
+        registerFeature(new WynntilsHintMessagesFeature());
         // endregion
 
         // region uncategorized

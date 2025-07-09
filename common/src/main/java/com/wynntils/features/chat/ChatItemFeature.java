@@ -241,7 +241,7 @@ public class ChatItemFeature extends Feature {
                 if (wynnItem instanceof IdentifiableItemProperty<?, ?> identifiableItemProperty) {
                     if (identifiableItemProperty.isPerfect()) {
                         nameText = StyledText.fromComponent(
-                                ComponentUtils.makeRainbowStyle("Perfect " + nameText.getString()));
+                                ComponentUtils.makeRainbowStyle("Perfect " + nameText.getString(), true));
                     } else if (identifiableItemProperty.isDefective()) {
                         nameText = StyledText.fromComponent(
                                 ComponentUtils.makeObfuscated("Defective " + nameText.getString(), 0, 0));

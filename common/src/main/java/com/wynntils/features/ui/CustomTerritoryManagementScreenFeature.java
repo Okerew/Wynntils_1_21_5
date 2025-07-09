@@ -24,6 +24,7 @@ import com.wynntils.models.containers.containers.GuildTerritoriesContainer;
 import com.wynntils.screens.territorymanagement.TerritoryManagementScreen;
 import com.wynntils.utils.mc.KeyboardUtils;
 import com.wynntils.utils.mc.McUtils;
+import com.wynntils.utils.type.ShiftBehavior;
 import com.wynntils.utils.wynn.ContainerUtils;
 import com.wynntils.utils.wynn.InventoryUtils;
 import java.util.regex.Pattern;
@@ -158,11 +159,5 @@ public class CustomTerritoryManagementScreenFeature extends Feature {
         } else {
             Handlers.Command.sendCommandImmediately("guild manage");
         }
-    }
-
-    private enum ShiftBehavior {
-        NONE,
-        ENABLED_IF_SHIFT_HELD,
-        DISABLED_IF_SHIFT_HELD
     }
 }

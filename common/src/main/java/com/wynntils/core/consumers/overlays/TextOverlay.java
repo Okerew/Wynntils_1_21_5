@@ -12,7 +12,6 @@ import com.wynntils.core.persisted.config.Config;
 import com.wynntils.core.text.StyledText;
 import com.wynntils.utils.colors.CommonColors;
 import com.wynntils.utils.colors.CustomColor;
-import com.wynntils.utils.render.FontRenderer;
 import com.wynntils.utils.render.buffered.BufferedFontRenderer;
 import com.wynntils.utils.render.type.HorizontalAlignment;
 import com.wynntils.utils.render.type.TextShadow;
@@ -86,25 +85,21 @@ public abstract class TextOverlay extends DynamicOverlay {
             GuiGraphics guiGraphics, MultiBufferSource bufferSource, StyledText[] lines, float textScale) {
         float renderX = this.getRenderX();
         float renderY = this.getRenderY();
-        for (StyledText line : lines) {
-            BufferedFontRenderer.getInstance()
-                    .renderAlignedTextInBox(
-                            guiGraphics.pose(),
-                            bufferSource,
-                            line,
-                            renderX,
-                            renderX + this.getWidth(),
-                            renderY,
-                            renderY + this.getHeight(),
-                            0,
-                            this.getRenderColor(),
-                            this.getRenderHorizontalAlignment(),
-                            this.getRenderVerticalAlignment(),
-                            this.textShadow.get(),
-                            textScale);
-
-            renderY += FontRenderer.getInstance().getFont().lineHeight * textScale;
-        }
+        BufferedFontRenderer.getInstance()
+                .renderAlignedTextInBox(
+                        guiGraphics.pose(),
+                        bufferSource,
+                        lines,
+                        renderX,
+                        renderX + this.getWidth(),
+                        renderY,
+                        renderY + this.getHeight(),
+                        0,
+                        this.getRenderColor(),
+                        this.getRenderHorizontalAlignment(),
+                        this.getRenderVerticalAlignment(),
+                        this.textShadow.get(),
+                        textScale);
     }
 
     @Override
@@ -132,11 +127,14 @@ public abstract class TextOverlay extends DynamicOverlay {
     public final boolean isRendered() {
         // If the enabled template is empty,
         // the overlay is rendered when the player is in the world.
-        if (enabledTemplate.get().isEmpty()) return isRenderedDefault();
+        String template = enabledTemplate.get();
+        if (template.isEmpty()) return isRenderedDefault();
 
         // If the enabled template is not empty,
         // the overlay is rendered when the template is true.
-        ErrorOr<Boolean> enabledOrError = Managers.Function.tryGetRawValueOfType(enabledTemplate.get(), Boolean.class);
+        String formattedTemplate =
+                StyledText.join("", Managers.Function.doFormatLines(template)).getString();
+        ErrorOr<Boolean> enabledOrError = Managers.Function.tryGetRawValueOfType(formattedTemplate, Boolean.class);
         return !enabledOrError.hasError() && enabledOrError.getValue();
     }
 
